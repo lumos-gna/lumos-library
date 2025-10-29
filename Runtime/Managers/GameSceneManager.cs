@@ -13,12 +13,12 @@ public abstract class GameSceneManager : GameManagerComponent
     #region  --------------------------------------------------- UNITY
 
     
-    private void Awake()
+    protected virtual void Awake()
     {
         StartCoroutine(InitAsync());
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         GameManager.Instance?.Unregister(this);
     }
