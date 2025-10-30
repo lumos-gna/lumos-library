@@ -1,5 +1,9 @@
-﻿public interface IPoolable
+﻿namespace Lumos.DevPack
 {
-    public void OnGet();
-    public void OnRealease();
+    public interface IPoolable
+    {
+        public void OnGet();
+        public void OnRealease();
+    }
 }
+

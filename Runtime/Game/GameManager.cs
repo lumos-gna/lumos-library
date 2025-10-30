@@ -4,114 +4,118 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GameManager : SingletonGlobal<GameManager>
+
+namespace Lumos.DevPack
 {
-    #region  >--------------------------------------------------- PROPERTIES
-    
-    
-    public bool IsInitialized { get; private set; }
-
-    
-    #endregion
-    #region  >--------------------------------------------------- FIEDLS
-    
-    
-    private Dictionary<Type ,BaseGameComponent> _components = new();
-    
-    
-    #endregion
-    #region  >--------------------------------------------------- UNITY
-
-    protected override void Awake()
+    public class GameManager : SingletonGlobal<GameManager>
     {
-        base.Awake();
+        #region  >--------------------------------------------------- PROPERTIES
         
-        Init();
-    }
-
-    #endregion
-    #region  >--------------------------------------------------- INIT
-    
-    
-    public void Init()
-    {
-        if (IsInitialized) return;
         
-        var container = Resources.Load<GameManagerComponentsSO>(Constant.GAME_MGR_COMPONENTS_PATH);
+        public bool IsInitialized { get; private set; }
 
-        if (container == null)
+        
+        #endregion
+        #region  >--------------------------------------------------- FIEDLS
+        
+        
+        private Dictionary<Type ,BaseGameComponent> _components = new();
+        
+        
+        #endregion
+        #region  >--------------------------------------------------- UNITY
+
+        protected override void Awake()
         {
-            DebugUtil.LogError(" CONTAINER PATH ", "INIT FAIL");
-            return;
-        }
-        
-        StartCoroutine(InitComponents(container));
-    }
-    
-    private IEnumerator InitComponents(GameManagerComponentsSO container)
-    {
-        var orderPrefabs = container.ComponentPrefabs.OrderBy( manager => manager.Order ).ToArray();
-        
-        for (int i = 0; i < orderPrefabs.Length; i++)
-        {
-            var component = Instantiate(orderPrefabs[i], transform);
-            var type = component.GetType();
+            base.Awake();
             
-            if (_components.ContainsKey(type))
+            Init();
+        }
+
+        #endregion
+        #region  >--------------------------------------------------- INIT
+        
+        
+        public void Init()
+        {
+            if (IsInitialized) return;
+            
+            var container = Resources.Load<GameManagerComponentsSO>(Constant.GAME_MGR_COMPONENTS_PATH);
+
+            if (container == null)
             {
-                DebugUtil.LogError(" INIT FAIL ", $" { component.GetType() } ");
-                yield break;
+                DebugUtil.LogError(" CONTAINER PATH ", "INIT FAIL");
+                return;
             }
             
-            component.Init();
-            yield return new WaitUntil( () => component.IsInitialized );
-            
-            _components[type] = component;
-            DebugUtil.Log(" INIT COMPLETE ", $" { type } ");
+            StartCoroutine(InitComponents(container));
         }
         
-        IsInitialized = true;
-        DebugUtil.Log("", " All Managers INIT COMPLETE ");
-    }
-    
-    
-    #endregion
-    #region  >--------------------------------------------------- GET
-    
-    
-    public T Get<T>() where T : BaseGameComponent
-    {
-        if (_components.TryGetValue(typeof(T), out var component))
+        private IEnumerator InitComponents(GameManagerComponentsSO container)
         {
-            return component as T;
+            var orderPrefabs = container.ComponentPrefabs.OrderBy( manager => manager.Order ).ToArray();
+            
+            for (int i = 0; i < orderPrefabs.Length; i++)
+            {
+                var component = Instantiate(orderPrefabs[i], transform);
+                var type = component.GetType();
+                
+                if (_components.ContainsKey(type))
+                {
+                    DebugUtil.LogError(" INIT FAIL ", $" { component.GetType() } ");
+                    yield break;
+                }
+                
+                component.Init();
+                yield return new WaitUntil( () => component.IsInitialized );
+                
+                _components[type] = component;
+                DebugUtil.Log(" INIT COMPLETE ", $" { type } ");
+            }
+            
+            IsInitialized = true;
+            DebugUtil.Log("", " All Managers INIT COMPLETE ");
         }
+        
+        
+        #endregion
+        #region  >--------------------------------------------------- GET
+        
+        
+        public T Get<T>() where T : BaseGameComponent
+        {
+            if (_components.TryGetValue(typeof(T), out var component))
+            {
+                return component as T;
+            }
 
-        return null;
-    }
-    
-    
-    #endregion
-    #region  >--------------------------------------------------- REGISTER
+            return null;
+        }
+        
+        
+        #endregion
+        #region  >--------------------------------------------------- REGISTER
 
-    
-    public void Register<T>(T component) where T : BaseGameComponent
-    {
-        if (_components.ContainsKey(component.GetType()))
+        
+        public void Register<T>(T component) where T : BaseGameComponent
         {
-            DebugUtil.LogWarning("Duplicate component registration ", component.GetType().ToString());
+            if (_components.ContainsKey(component.GetType()))
+            {
+                DebugUtil.LogWarning("Duplicate component registration ", component.GetType().ToString());
+            }
+            else
+            {
+                _components[component.GetType()] = component;
+            }
         }
-        else
+        
+        public void Unregister<T>(T component) where T : BaseGameComponent
         {
-            _components[component.GetType()] = component;
+            _components.Remove(component.GetType());
         }
+        
+        
+        #endregion
+     
     }
-    
-    public void Unregister<T>(T component) where T : BaseGameComponent
-    {
-        _components.Remove(component.GetType());
-    }
-    
-    
-    #endregion
- 
 }

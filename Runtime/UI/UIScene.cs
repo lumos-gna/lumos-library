@@ -1,10 +1,13 @@
 using UnityEngine;
 
-public abstract class UIScene : UIBase
+namespace Lumos.DevPack
 {
-    #region  >--------------------------------------------------- UNITY
+    public abstract class UIScene : UIBase
+    {
+        #region >--------------------------------------------------- UNITY
 
- 
 
-    #endregion
+
+        #endregion
+    }
 }

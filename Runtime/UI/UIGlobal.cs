@@ -1,4 +1,7 @@
-﻿public abstract class UIGlobal : UIBase
+﻿namespace Lumos.DevPack
 {
- 
+    public abstract class UIGlobal : UIBase
+    {
+
+    }
 }

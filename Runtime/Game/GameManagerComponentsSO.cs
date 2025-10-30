@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameManagerComponents", menuName = "Scriptable Objects/Game Manager Components", order = 0)]
-public class GameManagerComponentsSO : ScriptableObject
+namespace Lumos.DevPack
 {
-    [field: SerializeField] public BaseGameComponent[] ComponentPrefabs { get; private set; }
+    [CreateAssetMenu(fileName = "GameManagerComponents", menuName = "Scriptable Objects/Game Manager Components",
+        order = 0)]
+    public class GameManagerComponentsSO : ScriptableObject
+    {
+        [field: SerializeField] public BaseGameComponent[] ComponentPrefabs { get; private set; }
+    }
 }
