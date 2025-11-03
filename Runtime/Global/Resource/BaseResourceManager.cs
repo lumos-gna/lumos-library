@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
-    public class ResourceManager : MonoBehaviour, IPreInitializer
+    public class BaseResourceManager : MonoBehaviour, IPreInitialize, IResourceManager
     {
         #region  >--------------------------------------------------- PROPERTIES
         
-        public int Order => (int)PreInitializeOrder.Resource;
-        public bool IsInitialized { get; private set; }
+        
+        public int PreInitOrder => (int)PreInitializeOrder.Resource;
+        public bool PreInitialized { get; private set; }
+        
         
         #endregion
         #region  >--------------------------------------------------- FIELDS
@@ -22,13 +23,11 @@ namespace Lumos.DevPack
         #region  >--------------------------------------------------- INIT
 
 
-        public Task InitAsync()
+        public void PreInit()
         {
-            Global.Register(this);
+            Global.Register<IResourceManager>(this);
             
-            
-            IsInitialized = true;
-            return Task.CompletedTask;
+            PreInitialized = true;
         }
         
         
@@ -68,5 +67,6 @@ namespace Lumos.DevPack
         
 
         #endregion
+
     }
 }

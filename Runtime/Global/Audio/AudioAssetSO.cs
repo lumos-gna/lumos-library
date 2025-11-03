@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
     [CreateAssetMenu(fileName = "SoundAsset", menuName = "Scriptable objects/Sound Asset")]
     public class AudioAssetSO : ScriptableObject

@@ -1,63 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
     public static class PreInitializer
     {
-        #region >--------------------------------------------------- PROPERTIES
-
-
-        public static bool IsInitialized => _isInitialized;
-        
-        
-        #endregion
-        #region >--------------------------------------------------- FIELDS
-
-        
-        private static bool _isInitialized = false;
-        
-        #endregion
-        #region >--------------------------------------------------- INIT
-
-
+        public static bool Initialized { get; private set; }
+         
         static PreInitializer()
         {
-            _ = InitAsync();
+            var runner = new GameObject("Initialize Runner").AddComponent<PreInitializeRunner>();
+            runner.Run();
         }
-        
-        private static async Task InitAsync()
+
+        public static void SetInitialized(bool enabled)
         {
-            if (_isInitialized) return;
-            
-            var initializerPrefabs 
-                = Resources.LoadAll<MonoBehaviour>(Path.PreInitializer)
-                    .OfType<IPreInitializer>()
-                        .OrderBy(x => x.Order); 
-            
-            
-            var sortedInitializer = initializerPrefabs.OrderBy(x => x.Order).ToList();
-
-            foreach (var initializer in sortedInitializer)
-            {
-                var prefab = initializer as MonoBehaviour;
-                var instance = Object.Instantiate(prefab);
-                var initializerInstance = instance as IPreInitializer;
-
-                instance.gameObject.name = prefab.name;
-                
-                await initializerInstance.InitAsync();
-
-                DebugUtil.Log(" INIT COMPLETE ", $" { instance.name } ");
-            }
-
-            _isInitialized = true;
-            DebugUtil.Log("", " All INIT COMPLETE ");
+            Initialized = enabled;
         }
-        
-        
-        #endregion
     }
 }

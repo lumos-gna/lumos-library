@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
     [RequireComponent(typeof(Canvas))]
     [RequireComponent(typeof(CanvasGroup))]

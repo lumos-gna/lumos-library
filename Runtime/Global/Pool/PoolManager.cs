@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
-    public class PoolManager : MonoBehaviour, IPreInitializer
+    public class PoolManager : MonoBehaviour, IPreInitialize, IGlobal
     {
         #region >--------------------------------------------------- PROPERTIES
 
-        public int Order => (int)PreInitializeOrder.ObjectPool;
-        public bool IsInitialized { get; private set; }
+        public int PreInitOrder => (int)PreInitializeOrder.ObjectPool;
+        public bool PreInitialized { get; private set; }
 
 
         #endregion
@@ -27,13 +26,11 @@ namespace Lumos.DevPack
         #region >--------------------------------------------------- INIT
 
 
-        public Task InitAsync()
+        public void PreInit()
         {
             Global.Register(this);
             
-            
-            IsInitialized = true;
-            return Task.CompletedTask; 
+            PreInitialized = true;
         }
 
 

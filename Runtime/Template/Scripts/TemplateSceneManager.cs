@@ -1,4 +1,4 @@
-﻿using Lumos.DevPack;
+﻿using Lumos.DevKit;
 using UnityEngine;
 
 public class TemplateSceneManager : BaseSceneManager

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
     public abstract class BaseSceneManager : SingletonScene<BaseSceneManager>
     {
@@ -24,7 +24,7 @@ namespace Lumos.DevPack
         
         private IEnumerator InitAsync() 
         {
-            yield return new WaitUntil(() => PreInitializer.IsInitialized);
+            yield return new WaitUntil(() => PreInitializer.Initialized);
 
             Init();
         }

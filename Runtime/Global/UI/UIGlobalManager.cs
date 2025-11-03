@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
-    public class UIGlobalManager : UIBaseManager, IPreInitializer
+    public class UIGlobalManager : UIBaseManager, IPreInitialize, IGlobal
     {
         #region >--------------------------------------------------- PROPERTIES
 
         
-        public int Order => (int)PreInitializeOrder.UI;
-        public bool IsInitialized { get; private set; }
+        public int PreInitOrder => (int)PreInitializeOrder.UI;
+        public bool PreInitialized { get; private set; }
 
 
         #endregion
@@ -23,9 +22,9 @@ namespace Lumos.DevPack
         #region >--------------------------------------------------- INIT
 
 
-        public Task InitAsync()
+        public void PreInit()
         {
-            var uiGlobalPrefabs = Global.Get<ResourceManager>().LoadAll<UIBase>(Path.UI);
+            var uiGlobalPrefabs = Global.Get<BaseResourceManager>().LoadAll<UIBase>(Path.UI);
 
             for (int i = 0; i < uiGlobalPrefabs.Length; i++)
             {
@@ -37,9 +36,7 @@ namespace Lumos.DevPack
             
             Global.Register(this);
             
-            
-            IsInitialized = true;
-            return Task.CompletedTask;
+            PreInitialized = true;
         }
   
 

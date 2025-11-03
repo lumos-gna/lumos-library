@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Lumos.DevPack;
+using Lumos.DevKit;
 
 public class UITestSceneManager : UISceneManager
 {

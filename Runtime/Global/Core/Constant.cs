@@ -1,4 +1,4 @@
-﻿namespace Lumos.DevPack
+﻿namespace Lumos.DevKit
 {
     public static class Constant
     {

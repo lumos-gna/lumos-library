@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
     public abstract class UISceneManager : UIBaseManager
     {

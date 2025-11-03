@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
-    public class AudioManager : MonoBehaviour, IPreInitializer
+    public class AudioManager : MonoBehaviour, IPreInitialize, IGlobal
     {
         #region >--------------------------------------------------- PROPERTIES
 
 
-        public int Order => (int)PreInitializeOrder.Audio;
-        public bool IsInitialized { get; private set; }
+        public int PreInitOrder => (int)PreInitializeOrder.Audio;
+        public bool PreInitialized { get; private set; }
         
         
         #endregion
@@ -32,11 +31,11 @@ namespace Lumos.DevPack
         #region >--------------------------------------------------- INIT
 
 
-        public Task InitAsync()
+        public void PreInit()
         {
             _poolManager = Global.Get<PoolManager>();
             
-            var resourceMgr = Global.Get<ResourceManager>();
+            var resourceMgr = Global.Get<BaseResourceManager>();
             var resources = resourceMgr.LoadAll<AudioAssetSO>(Path.Audio);
 
             foreach (var resource in resources)
@@ -49,11 +48,9 @@ namespace Lumos.DevPack
             if (_playerPrefab == null)
             {
                 DebugUtil.LogError(" wrong audio player path ", " INIT FAIL ");
-                return null;
             }
             
-            IsInitialized = true;
-            return Task.CompletedTask;
+            PreInitialized = true;
         }
         
 

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Lumos.DevPack
+namespace Lumos.DevKit
 {
     [RequireComponent(typeof(AudioSource))]
-    public class AudioPlayer : MonoBehaviour, IPoolable
+    public class AudioPlayer : MonoBehaviour, IPoolable 
     {
         #region >--------------------------------------------------- PROPERTIE
 
