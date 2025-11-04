@@ -15,6 +15,7 @@ namespace LumosLib.Core
         public virtual int GetID()
         {
             return name.GetHashCode();
+            
         }
     }
 }
