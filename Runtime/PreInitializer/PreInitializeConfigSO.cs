@@ -27,31 +27,26 @@ namespace LumosLib
         [field: Header("PreInitialize")]
         [field: SerializeField] public List<MonoBehaviour> PreInitializes { get; private set; } = new();
 
-        
-        public void Init()
+
+        private void Awake()
         {
+#if UNITY_EDITOR
             SelectedTableType = TableType.None;
-            
             
             if (PreInitializes.Count == 0)
             {
-                PreInitializes.Add(
-                    AssetDatabase.LoadAssetAtPath<DataManager>(Constant.PathRuntimeSamples + "/DataManager.prefab"));
-                PreInitializes.Add(
-                    AssetDatabase.LoadAssetAtPath<PoolManager>(Constant.PathRuntimeSamples + "/PoolManager.prefab"));
-                PreInitializes.Add(
-                    AssetDatabase.LoadAssetAtPath<AudioManager>(Constant.PathRuntimeSamples + "/AudioManager.prefab"));
-                PreInitializes.Add(
-                    AssetDatabase.LoadAssetAtPath<UIManager>(Constant.PathRuntimeSamples + "/UIManager.prefab"));
-                PreInitializes.Add(
-                    AssetDatabase.LoadAssetAtPath<ResourceManager>(Constant.PathRuntimeSamples + "/ResourceManager.prefab"));
+                PreInitializes.Add(Resources.Load<DataManager>(nameof(DataManager)));
+                PreInitializes.Add(Resources.Load<PoolManager>(nameof(PoolManager)));
+                PreInitializes.Add(Resources.Load<AudioManager>(nameof(AudioManager)));
+                PreInitializes.Add(Resources.Load<UIManager>(nameof(UIManager)));
+                PreInitializes.Add(Resources.Load<ResourceManager>(nameof(ResourceManager)));
             }
             
             if (AudioPlayerPrefab == null)
             {
-                AudioPlayerPrefab =
-                    AssetDatabase.LoadAssetAtPath<AudioPlayer>(Constant.PathRuntimeSamples + "/AudioPlayer.prefab");
+                AudioPlayerPrefab = Resources.Load<AudioPlayer>(nameof(AudioPlayer));
             }
         }
+#endif
     }
 }

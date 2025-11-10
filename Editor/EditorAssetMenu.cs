@@ -40,6 +40,12 @@ namespace LumosLib
         #endregion
         #region >--------------------------------------------------- SO
         
+        
+        [MenuItem("Assets/[ ✨Lumos Lib ]/Scriptable Object/PreInitialize Config SO", false, 0)]
+        public static void CreatePreInitializeSO()
+        {
+            CreateSO<PreInitializeConfigSO>("PreInitialize Config.asset");
+        }
              
         [MenuItem("Assets/[ ✨Lumos Lib ]/Scriptable Object/Sound Asset SO", false, 0)]
         public static void CreateSoundAssetSO()
