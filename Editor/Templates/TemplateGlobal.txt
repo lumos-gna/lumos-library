@@ -4,11 +4,11 @@ public class Global : BaseGlobal
 {
       //MEMO : expanded in project
       /* 
-      public static IUIManager UI
+      public static PlaySceneManager PlayScene
       {
-            get => _ui ??= Get<IUIManager>();
+            get => _ui ??= Get<PlaySceneManager>();
             set => _ui = value;
       }
-      private static IUIManager _ui;
+      private static PlaySceneManager _playScene;
       */
 }

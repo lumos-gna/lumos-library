@@ -6,8 +6,8 @@ namespace LumosLib
     {
         public void SetVolume(string groupName, float volume);
 
-        public void PlayBGM(int bgmType, int assetId);
-        public void PlaySFX(int assetId);
+        public void PlayBGM(int bgmType, string assetName);
+        public void PlaySFX(string assetName);
         public void StopBGM(int bgmType);
         public void StopAll();
         public void PauseBGM(int bgmType, bool enable);

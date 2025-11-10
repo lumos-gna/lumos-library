@@ -21,7 +21,7 @@ namespace LumosLib
         protected AudioPlayer _playerPrefab;
         protected Dictionary<int, AudioPlayer> _bgmPlayers = new();
         protected HashSet<AudioPlayer> _activePlayers = new();
-        protected Dictionary<int, SoundAssetSO> _assetResources = new();
+        protected Dictionary<string, SoundAssetSO> _assetResources = new();
         
         
         #endregion
@@ -36,9 +36,9 @@ namespace LumosLib
             
             foreach (var resource in resources)
             {
-                _assetResources[resource.GetID()] = resource;
+                _assetResources[resource.name] = resource;
                 
-                Debug.Log(resource.GetID());
+                Debug.Log(resource.name);
             }
 
             _playerPrefab = PreInitializer.Instance.Config.AudioPlayerPrefab;
@@ -67,13 +67,13 @@ namespace LumosLib
         #region >--------------------------------------------------- PLAY
 
 
-        public abstract void PlayBGM(int bgmType, int assetId);
-        public abstract void PlaySFX(int assetId);
+        public abstract void PlayBGM(int bgmType, string assetName);
+        public abstract void PlaySFX(string assetName);
         
         
-        protected void Play(int assetId, AudioPlayer player)
+        protected void Play(string assetName, AudioPlayer player)
         {
-            if (_assetResources.TryGetValue(assetId, out SoundAssetSO asset))
+            if (_assetResources.TryGetValue(assetName, out SoundAssetSO asset))
             {
                 player.Play(asset);
                 

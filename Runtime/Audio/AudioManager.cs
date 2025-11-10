@@ -12,11 +12,11 @@
         #region >--------------------------------------------------- PLAY
 
         
-        public override void PlayBGM(int bgmType, int assetId)
+        public override void PlayBGM(int bgmType, string assetName)
         {
             if (_bgmPlayers.TryGetValue(bgmType, out var containsPlayer))
             {
-                Play(assetId, containsPlayer);
+                Play(assetName, containsPlayer);
                 return;
             }
             
@@ -24,12 +24,12 @@
             
             _bgmPlayers[bgmType] = bgmPlayer;
             
-            Play(assetId, bgmPlayer);
+            Play(assetName, bgmPlayer);
         }
         
-        public override void PlaySFX(int assetId)
+        public override void PlaySFX(string assetName)
         {
-            Play(assetId, _poolManager.Get(_playerPrefab));
+            Play(assetName, _poolManager.Get(_playerPrefab));
         }
         
         
