@@ -8,12 +8,19 @@ namespace LumosLib
     public static class EditorInitializer
     {
         [DidReloadScripts]
-        static void TryCreateConfig()
+        static void Initialize()
+        {
+            TryCreateConfig();
+            CreateGlobalsScript();
+        }
+        
+        
+        private static void TryCreateConfig()
         {
             
-            string path = $"Assets/Resources/{Constant.GlobalConfig}.asset"; 
+            string path = $"Assets/Resources/{Constant.PreInitializerConfig}.asset"; 
             
-            GlobalConfigSO config = AssetDatabase.LoadAssetAtPath<GlobalConfigSO>(path);
+            PreInitializerConfigSO config = AssetDatabase.LoadAssetAtPath<PreInitializerConfigSO>(path);
             
             
             string folderPath = Path.GetDirectoryName(path);
@@ -25,7 +32,7 @@ namespace LumosLib
             
             if (config == null)
             {
-                config = ScriptableObject.CreateInstance<GlobalConfigSO>();
+                config = ScriptableObject.CreateInstance<PreInitializerConfigSO>();
                 
                 AssetDatabase.CreateAsset(config, path);
                 AssetDatabase.SaveAssets();
@@ -33,21 +40,23 @@ namespace LumosLib
             }
         }
         
-        
-        [DidReloadScripts]
-        public static void CreateGlobalsScript()
+        private static void CreateGlobalsScript()
         {
+            string templatePath = $"{Constant.LumosLib}/Editor/Templates/{Constant.TemplateGlobal}.txt";
+            string path = $"Assets/Scripts/{Constant.Global}.cs";
+            
             
             string[] guids = AssetDatabase.FindAssets("Globals t:MonoScript", new[] { "Assets" });
 
-            if (guids.Length > 0) return;
+            if (guids.Length > 0)
+            {
+                return;
+            }
 
-            
-            string templatePath = $"{Constant.LumosLib}/Editor/Templates/TemplateGlobals.txt";
             
             string template = File.ReadAllText(templatePath);
             
-            File.WriteAllText("Assets/Scripts/Globals.cs", template);
+            File.WriteAllText(path, template);
 
             AssetDatabase.Refresh();
             

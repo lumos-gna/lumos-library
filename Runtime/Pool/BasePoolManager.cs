@@ -16,7 +16,7 @@ namespace LumosLib
 
         protected void Awake()
         {
-            Global.Register<IPoolManager>(this);
+            BaseGlobal.Register<IPoolManager>(this);
         }
       
 

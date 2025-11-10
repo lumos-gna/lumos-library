@@ -33,13 +33,15 @@ namespace LumosLib
   
         protected virtual void Awake()
         {
-            if (Instance != null)
+            if (_instance == null)
+            {
+                _instance = this as T;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (_instance != this)
             {
                 Destroy(gameObject);
-                return;
             }
-
-            _instance = this as T;
         }
         
         protected virtual void OnDestroy()

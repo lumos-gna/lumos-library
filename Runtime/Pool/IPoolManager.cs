@@ -3,7 +3,7 @@ using UnityEngine.Pool;
 
 namespace LumosLib
 {
-    public interface IPoolManager : IGlobal
+    public interface IPoolManager
     {
         public ObjectPool<T> GetPool<T>(T prefab, int defaultCapacity, int maxSize) where T : MonoBehaviour, IPoolable;
         public T Get<T>(T prefab) where T : MonoBehaviour, IPoolable;

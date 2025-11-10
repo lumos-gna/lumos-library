@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace LumosLib
 {
-    public class TaskUtil
+    public class TaskExtensions
     {
         public static async Task WaitUntil(Func<bool> predicate, int checkIntervalMs = 50)
         {

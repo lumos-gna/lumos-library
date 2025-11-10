@@ -29,9 +29,9 @@ namespace LumosLib
 
         protected virtual void Awake()
         {
-            _poolManager = Global.Get<IPoolManager>();
+            _poolManager = BaseGlobal.Pool;
             
-            var resourceManager = Global.Get<IResourceManager>();
+            var resourceManager = BaseGlobal.Resource;
             var resources = resourceManager.LoadAll<SoundAssetSO>(Constant.Audio);
             
             foreach (var resource in resources)
@@ -45,7 +45,7 @@ namespace LumosLib
                 DebugUtil.LogError(" wrong audio player path ", " INIT FAIL ");
             }
             
-            Global.Register<IAudioManager>(this);
+            BaseGlobal.Register<IAudioManager>(this);
         }
         
         #endregion

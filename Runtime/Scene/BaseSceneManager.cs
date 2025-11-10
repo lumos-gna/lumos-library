@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LumosLib
 {
-    public abstract class BaseSceneManager : SingletonScene<BaseSceneManager>, IGlobal
+    public abstract class BaseSceneManager : SingletonScene<BaseSceneManager>
     {
         #region --------------------------------------------------- UNITY
 
@@ -19,7 +19,7 @@ namespace LumosLib
         {
             base.OnDestroy();
             
-            Global.Unregister(this);
+            BaseGlobal.Unregister(this);
         }
 
 
@@ -29,12 +29,12 @@ namespace LumosLib
 
         protected virtual void Init()
         {
-            Global.Register(this);
+            BaseGlobal.Register(this);
         }
         
         private IEnumerator InitAsync() 
         {
-            yield return new WaitUntil(() => Global.Initialized);
+            yield return new WaitUntil(() => PreInitializer.Instance.Initialized);
 
             Init();
         }

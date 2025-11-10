@@ -1,0 +1,14 @@
+﻿using LumosLib;
+
+public class Global : BaseGlobal
+{
+      //MEMO : expanded in project
+      /* 
+      public static IUIManager UI
+      {
+            get => _ui ??= Get<IUIManager>();
+            set => _ui = value;
+      }
+      private static IUIManager _ui;
+      */
+}

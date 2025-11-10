@@ -4,8 +4,8 @@ using UnityEngine.Audio;
 
 namespace LumosLib
 {
-    [CreateAssetMenu(fileName = "Global Config", menuName = "[ ✨Lumos Lib Asset ]/Global Config", order = 0) ]
-    public class GlobalConfigSO : ScriptableObject
+    [CreateAssetMenu(fileName = "PreInitializer Config", menuName = "[ ✨Lumos Lib Asset ]/PreInitializer Config", order = 0) ]
+    public class PreInitializerConfigSO : ScriptableObject
     {
         [field: Header("Audio")]
 

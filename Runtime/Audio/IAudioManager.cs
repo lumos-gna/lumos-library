@@ -2,7 +2,7 @@
 
 namespace LumosLib
 {
-    public interface IAudioManager : IGlobal
+    public interface IAudioManager
     {
         public void SetMixer(AudioMixer mixer);
         public void SetVolume(string groupName, float volume);

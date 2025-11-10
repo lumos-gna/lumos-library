@@ -73,7 +73,7 @@ namespace LumosLib
                 }
             }
             
-            Global.Register<IDataManager>(this);
+            BaseGlobal.Register<IDataManager>(this);
             
             PreInitialized = true;
         }

@@ -3,7 +3,7 @@ using System;
 
 namespace LumosLib
 {
-    public static class VectorUtil
+    public static class VectorExtensions
     {
         #region >--------------------------------------------------- VECTOR3
 

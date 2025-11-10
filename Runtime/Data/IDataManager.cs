@@ -2,7 +2,7 @@
 
 namespace LumosLib
 {
-    public interface IDataManager : IGlobal
+    public interface IDataManager
     {
         public List<T> GetDataAll<T>() where T : IData;
     }
