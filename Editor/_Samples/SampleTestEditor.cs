@@ -21,18 +21,16 @@ namespace LumosLib
 
         private GameObject _testObject;
         
-
-       
         
         
-        [MenuItem("✨Lumos Lib/01.Test Editor/Template")]
+        [MenuItem("✨Lumos Lib/Test Editor/SAMPLE")]
         public static void Open()
         {
-            OnOpen<SampleTestEditor>("TEMPLATE");
+            OnOpen<SampleTestEditor>("SAMPLE");
         }
 
         
-        //MEMO : if you want ( create group / change properties )
+        //MEMO : if you want ( create group or change properties )
         private void OnEnable()
         {
             TitleFontSize = 20;

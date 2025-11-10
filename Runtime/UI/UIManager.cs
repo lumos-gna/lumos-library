@@ -26,7 +26,8 @@ namespace LumosLib
 
         protected virtual void Awake()
         {
-            var uiGlobalPrefabs =  BaseGlobal.Resource.LoadAll<UIBase>("");
+            
+            var uiGlobalPrefabs =  Global.GetInternal<IResourceManager>().LoadAll<UIBase>("");
 
             for (int i = 0; i < uiGlobalPrefabs.Length; i++)
             {
@@ -36,7 +37,9 @@ namespace LumosLib
                 _globalUIPrefabs[key] = value;
             }
             
-            BaseGlobal.Register<IUIManager>(this);
+            Global.Register<IUIManager>(this);
+            
+            DontDestroyOnLoad(gameObject);
         }
 
         #endregion

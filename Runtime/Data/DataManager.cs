@@ -10,18 +10,39 @@ namespace LumosLib
 {
     public class DataManager : MonoBehaviour, IPreInitialize, IDataManager
     {
+        #region >--------------------------------------------------- PROPERTIE
+        
+        
         public int PreInitOrder => (int)PreInitializeOrder.Data;
         public bool PreInitialized { get; private set; }
         
+        
+        #endregion
+        #region >--------------------------------------------------- FIELD
+        
+        
         private Dictionary<Type, Dictionary<int, BaseData>> _loadDatas = new();
+        
+        
+        #endregion
+        #region >--------------------------------------------------- UNITY
 
-
+        
         private void Awake()
         {
             StartCoroutine(LoadDataAsync());
+            
+            DontDestroyOnLoad(gameObject);
+            
+            Global.Register<IDataManager>(this);
         }
+        
 
-        private IEnumerator LoadDataAsync()
+        #endregion
+        #region >--------------------------------------------------- INIT
+        
+        
+         private IEnumerator LoadDataAsync()
         {
             var tableLoader = GetLoader();
             if (tableLoader == null)
@@ -81,11 +102,13 @@ namespace LumosLib
                 }
             }
             
-            BaseGlobal.Register<IDataManager>(this);
-            
             PreInitialized = true;
         }
+         
         
+        #endregion
+        #region >--------------------------------------------------- GET
+
         
         public List<T> GetAll<T>() where T : BaseData
         {
@@ -112,8 +135,7 @@ namespace LumosLib
             return null;
         }
         
-        
-        private BaseTableLoader GetLoader()
+        private BaseDataLoader GetLoader()
         {
             return PreInitializer.Instance.Config.SelectedTableType switch
             {
@@ -121,6 +143,8 @@ namespace LumosLib
                 _ => null,
             };
         }
+        
+
+        #endregion
     }
-    
 }

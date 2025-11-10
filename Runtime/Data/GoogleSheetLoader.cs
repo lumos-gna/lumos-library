@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 namespace LumosLib
 {
-    public class GoogleSheetLoader : BaseTableLoader
+    public class GoogleSheetLoader : BaseDataLoader
     {
         public override IEnumerator LoadJsonAsync()
         {

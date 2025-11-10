@@ -3,23 +3,19 @@ using UnityEngine;
 
 namespace LumosLib
 {
-    public abstract class BaseSceneManager : SingletonScene<BaseSceneManager>
+    public abstract class BaseSceneManager<T> : MonoBehaviour where T : BaseSceneManager<T>
     {
         #region --------------------------------------------------- UNITY
 
 
-        protected override void Awake()
+        protected virtual void Awake()
         {
-            base.Awake();
-            
             StartCoroutine(InitAsync());
         }
 
-        protected override void OnDestroy()
+        protected virtual void OnDestroy()
         {
-            base.OnDestroy();
-            
-            BaseGlobal.Unregister(this);
+            Global.Unregister<T>();
         }
 
 
@@ -29,7 +25,7 @@ namespace LumosLib
 
         protected virtual void Init()
         {
-            BaseGlobal.Register(this);
+            Global.Register(this as T);
         }
         
         private IEnumerator InitAsync() 

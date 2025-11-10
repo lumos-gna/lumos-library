@@ -10,24 +10,17 @@ namespace LumosLib
         public bool Initialized { get; private set; }
         public PreInitializerConfigSO Config { get; private set; }
         
-        
         private List<IPreInitialize> PreInitializes = new();
         
         
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void Initialize()
-        {
-            _ = Instance;
-        }
-
         protected override void Awake()
         {
             base.Awake();
             
-            Config = Resources.Load<PreInitializerConfigSO>(Constant.PreInitializerConfig);
+            Config = Resources.Load<PreInitializerConfigSO>(Constant.PathPreInitializerConfig);
             if (Config == null)
             {
-                DebugUtil.LogWarning($" not found {Constant.PreInitializerConfig} "," INIT FAIL ");
+                DebugUtil.LogWarning($" not found {Constant.PathPreInitializerConfig} "," INIT FAIL ");
                 return;
             }
             
@@ -50,7 +43,7 @@ namespace LumosLib
         private IEnumerator InitAsync(List<IPreInitialize> preInitializes)
         {
             var startTime = Time.realtimeSinceStartup;
-            DebugUtil.Log($" Start ", " INITIALIZED ");
+            DebugUtil.Log("", " INITIALIZED - START ");
             
             
             //Initialize
@@ -75,7 +68,7 @@ namespace LumosLib
 
 
             var totalElapsed = Time.realtimeSinceStartup - startTime;
-            DebugUtil.Log($" Finish ( {totalElapsed * 1000f:F3} ms )", " INITIALIZED ");
+            DebugUtil.Log($" ( {totalElapsed * 1000f:F3} ms )", " INITIALIZED - FINISHED ");
 
 
             Initialized = true;

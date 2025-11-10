@@ -5,10 +5,10 @@
         #region >--------------------------------------------------- PATH
         
         
-        public const string LumosLib = "Packages/com.lumos.library";
-        public const string PreInitializerConfig = "PreInitializer Config";
-        public const string TemplateGlobal = "TemplateGlobal";
-        public const string Global = "Global";
+        public const string PathLumosLib = "Packages/com.lumos.library";
+        public const string PathPreInitializerConfig = "Assets/Resources/PreInitializer Config.asset";
+        public const string PathGlobalHubTemplate = PathLumosLib + "/Editor/Templates/GlobalHub.txt";
+        public const string PathTestEditorTemplate = PathLumosLib + "/Editor/Templates/TestEditor.txt";
         
         
         #endregion

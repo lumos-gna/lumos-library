@@ -15,7 +15,6 @@ namespace LumosLib
         protected Color UntoggledGroupTitleColor { get; set; } = Color.gray;
         
         
-        
         #endregion
         #region >--------------------------------------------------- FIELD
 
@@ -123,7 +122,6 @@ namespace LumosLib
                 onHover = { textColor = GroupTitleColor },
                 onActive = { textColor = GroupTitleColor },
             });
-
 
             if (isToggled)
             {

@@ -4,7 +4,6 @@ using UnityEngine.Audio;
 
 namespace LumosLib
 {
-    [CreateAssetMenu(fileName = "PreInitializer Config", menuName = "[ ✨Lumos Lib Asset ]/PreInitializer Config", order = 0) ]
     public class PreInitializerConfigSO : ScriptableObject
     {
         public enum TableType

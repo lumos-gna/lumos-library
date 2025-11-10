@@ -1,0 +1,21 @@
+﻿using LumosLib;
+using UnityEditor;
+
+public class #SCRIPTNAME# : BaseTestEditorWindow
+{
+    [MenuItem("✨Lumos Lib/Test Editor/#SCRIPTNAME#")]
+    public static void Open()
+    {
+        OnOpen<#SCRIPTNAME#>("#SCRIPTNAME#");
+    }
+    
+    private void OnEnable()
+    {
+      
+    }
+
+    protected override void OnGUI()
+    {
+        base.OnGUI();
+    }
+}

@@ -2,7 +2,7 @@
 
 namespace LumosLib
 {
-    public abstract class BaseTableLoader
+    public abstract class BaseDataLoader
     {
         protected string _path;
 

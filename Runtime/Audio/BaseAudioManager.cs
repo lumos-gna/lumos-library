@@ -29,9 +29,9 @@ namespace LumosLib
 
         protected virtual void Awake()
         {
-            _poolManager = BaseGlobal.Pool;
+            _poolManager = Global.GetInternal<IPoolManager>();
             
-            var resourceManager = BaseGlobal.Resource;
+            var resourceManager = Global.GetInternal<IResourceManager>();
             var resources = resourceManager.LoadAll<SoundAssetSO>("");
             
             foreach (var resource in resources)
@@ -50,7 +50,9 @@ namespace LumosLib
             
             _mixer = PreInitializer.Instance.Config.Mixer;
             
-            BaseGlobal.Register<IAudioManager>(this);
+            Global.Register<IAudioManager>(this);
+            
+            DontDestroyOnLoad(gameObject);
         }
         
         #endregion
