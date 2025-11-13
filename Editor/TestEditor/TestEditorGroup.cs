@@ -9,17 +9,103 @@ namespace LumosLib
 {
     public class TestEditorGroup : Editor
     {
-        public string Title { get; private set; }
+        #region >--------------------------------------------------- FIELD
+        
+        public event UnityAction<TestEditorGroup> OnDraw;
+        
+        private int _titleFontSize = 12;
 
-        private int _basicFontSize = 11;
+        private string _title;
+        private bool _isFoldOut;
+        private bool _isToggled;
+        private bool _isRuntimeOnly;
+        
+        private Color _enabledTitleColor = Color.cyan;
+        private Color _disabledTitleColor = Color.gray;
+        
+        
+        #endregion
+        #region >--------------------------------------------------- INIT
 
-
-        public void Init(string title)
+        
+        public void Init(string title, bool isFoldOut, UnityAction<TestEditorGroup> drawContents)
         {
-            Title = title;
+            _title = title;
+            _isFoldOut = isFoldOut;
+            OnDraw = drawContents;
         }
 
 
+        #endregion
+        #region >--------------------------------------------------- DRAW
+
+
+        public void Draw()
+        {
+            if (_isRuntimeOnly)
+            {
+                if (!Application.isPlaying)
+                {
+                    EditorGUILayout.HelpBox($"Group '{_title}' is runtime only", MessageType.Warning);
+                    
+                    return;
+                }
+            }
+            
+            if (_isFoldOut)
+            {
+                DrawFoldOut();
+            }
+            else
+            {
+                DrawBasic();
+            }
+        }
+
+        private void DrawBasic()
+        {
+            EditorGUILayout.LabelField(_title, new GUIStyle(EditorStyles.boldLabel)
+            {
+                fontSize = _titleFontSize,
+                normal = { textColor = _enabledTitleColor },
+                focused = { textColor = _enabledTitleColor },
+                hover =  { textColor = _enabledTitleColor },
+                active = { textColor = _enabledTitleColor },
+            });
+            EditorGUILayout.BeginVertical("box");
+            OnDraw?.Invoke(this);
+            
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space(_titleFontSize);
+        }
+
+        private void DrawFoldOut()
+        {
+            _isToggled = EditorGUILayout.Foldout(_isToggled, _title, true, new GUIStyle(EditorStyles.foldout)
+            {
+                fontSize = _titleFontSize,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = _disabledTitleColor },
+                focused = { textColor = _disabledTitleColor },
+                active = { textColor = _disabledTitleColor },
+                hover = { textColor = _disabledTitleColor },
+                onNormal = { textColor = _enabledTitleColor },
+                onFocused =  { textColor = _enabledTitleColor },
+                onHover = { textColor = _enabledTitleColor },
+                onActive = { textColor = _enabledTitleColor },
+            });
+
+            if (_isToggled)
+            {
+                EditorGUILayout.BeginVertical("box");
+                OnDraw?.Invoke(this);
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.Space(_titleFontSize);
+            }
+        }
+        
+
+        #endregion
         #region >--------------------------------------------------- DRAW : BUTTON
         
         
@@ -41,9 +127,9 @@ namespace LumosLib
         #region >--------------------------------------------------- DRAW : FIELD
 
         
-        public void DrawSpaceLine()
+        public void DrawSpaceLine(float height = 11)
         {
-            EditorGUILayout.Space(_basicFontSize); 
+            EditorGUILayout.Space(height); 
         }
         
         public void DrawField(string label, ref int value)
@@ -128,6 +214,39 @@ namespace LumosLib
             GUILayout.EndHorizontal();
         }
 
+
+        #endregion
+        #region >--------------------------------------------------- SET
+
+
+        public TestEditorGroup SetTitleColor(bool enabled, Color color)
+        {
+            if (enabled)
+            {
+                _enabledTitleColor = color;
+            }
+            else
+            {
+                _disabledTitleColor = color;
+            }
+
+            return this;
+        }
+
+        public TestEditorGroup SetTitleFontSize(int fontSize)
+        {
+            _titleFontSize = fontSize;
+            
+            return this;
+        }
+
+        public TestEditorGroup SetRuntimeOnly(bool runtimeOnly)
+        {
+            _isRuntimeOnly = runtimeOnly;
+
+            return this;
+        }
+        
 
         #endregion
     }

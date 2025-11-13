@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,25 +7,19 @@ namespace LumosLib
 {
     public abstract class BaseTestEditorWindow : EditorWindow
     {
-        #region >--------------------------------------------------- PROPERTIE
-
-        protected int TitleFontSize { get; set; } = 20;
-        protected int GroupTitleFontSize { get; set; } = 12;
-        protected Color TitleColor { get; set; } = Color.yellow;
-        protected Color GroupTitleColor { get; set; } = Color.cyan;
-        protected Color UntoggledGroupTitleColor { get; set; } = Color.gray;
-        
-        
-        #endregion
         #region >--------------------------------------------------- FIELD
 
         
+        private int _titleFontSize = 20;
         private static string _title;
         private Vector2 _scrollPos;
+        private Color _titleColor  = Color.yellow;
+        private List<TestEditorGroup> _groups = new();
+        private HashSet<TestEditorGroup> _groupHashSet = new();
         
         
         #endregion
-        #region >--------------------------------------------------- CORE
+        #region >--------------------------------------------------- UNITY
         
         
         protected static void OnOpen<T>(string title) where T : BaseTestEditorWindow
@@ -32,10 +27,15 @@ namespace LumosLib
             var window = GetWindow<T>();
             window.titleContent = new GUIContent(title);
             window.Show();
-            _title = title;
         }
 
-        protected virtual void OnGUI()
+        protected virtual void OnEnable()
+        {
+            _groups.Clear();
+            _groupHashSet.Clear();
+        }
+
+        private void OnGUI()
         {
             _scrollPos = EditorGUILayout.BeginScrollView(
                 _scrollPos,
@@ -44,23 +44,61 @@ namespace LumosLib
                 GUIStyle.none,
                 GUI.skin.verticalScrollbar,
                 GUIStyle.none
-                );
+            );
             
             DrawTitle(_title);
-        }
 
-        protected TestEditorGroup CreateGroup(string title)
+            for (int i = 0; i < _groups.Count; i++)
+            {
+                _groups[i].Draw();
+            }
+            
+            EditorGUILayout.Space(_titleFontSize);
+            EditorGUILayout.EndScrollView();
+            
+        }
+        
+        
+        #endregion
+        #region >--------------------------------------------------- CORE
+        
+        
+        protected TestEditorGroup AddGroup(string title, bool isFoldOut, UnityAction<TestEditorGroup> drawContents)
         {
             var group = CreateInstance<TestEditorGroup>();
-            group.Init(title);
-            
+
+            if (!_groupHashSet.Contains(group))
+            {
+                group.Init(title, isFoldOut, drawContents);
+                _groups.Add(group);
+                _groupHashSet.Add(group);
+            }
+            else
+            {
+                DestroyImmediate(group);
+            }
+
             return group;
         }
+       
 
-        protected void FinishDraw()
+        #endregion        
+        #region >--------------------------------------------------- SET
+
+
+        protected void SetTitle(string title)
         {
-            EditorGUILayout.Space(TitleFontSize);
-            EditorGUILayout.EndScrollView();
+            _title = title;
+        }
+        
+        protected void SetTitleFontSize(int fontSize)
+        {
+            _titleFontSize = fontSize;
+        }
+
+        protected void SetTitleColor(Color color)
+        {
+            _titleColor = color;
         }
         
         
@@ -70,69 +108,22 @@ namespace LumosLib
         
         private void DrawTitle(string title)
         {
-            EditorGUILayout.Space(TitleFontSize);
+            EditorGUILayout.Space(_titleFontSize);
             
             EditorGUILayout.LabelField(title, new GUIStyle(EditorStyles.boldLabel)
             {
-                fontSize = TitleFontSize,
+                fontSize = _titleFontSize,
                 alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = TitleColor },
-                focused = { textColor = TitleColor },
-                hover =  { textColor = TitleColor },
-                active = { textColor = TitleColor },
+                normal = { textColor = _titleColor },
+                focused = { textColor = _titleColor },
+                hover =  { textColor = _titleColor },
+                active = { textColor = _titleColor },
             });
             
-            EditorGUILayout.Space(TitleFontSize);
-            EditorGUILayout.Space(GroupTitleFontSize);
+            EditorGUILayout.Space(_titleFontSize);
         }
         
         
         #endregion
-        #region >--------------------------------------------------- DRAW : GROP
-      
-        
-        protected void DrawGroup(TestEditorGroup group, UnityAction contents)
-        {
-            EditorGUILayout.LabelField(group.Title, new GUIStyle(EditorStyles.boldLabel)
-            {
-                fontSize = GroupTitleFontSize,
-                normal = { textColor = GroupTitleColor },
-                focused = { textColor = GroupTitleColor },
-                hover =  { textColor = GroupTitleColor },
-                active = { textColor = GroupTitleColor },
-            });
-            EditorGUILayout.BeginVertical("box");
-            contents?.Invoke();
-            EditorGUILayout.EndVertical();
-            EditorGUILayout.Space(GroupTitleFontSize);
-        }
-
-        protected void DrawToggleGroup(TestEditorGroup group, ref bool isToggled, UnityAction contents)
-        {
-            isToggled = EditorGUILayout.Foldout(isToggled, group.Title, true, new GUIStyle(EditorStyles.foldout)
-            {
-                fontSize = GroupTitleFontSize,
-                fontStyle = FontStyle.Bold,
-                normal = { textColor = UntoggledGroupTitleColor },
-                focused = { textColor = UntoggledGroupTitleColor },
-                active = { textColor = UntoggledGroupTitleColor },
-                hover = { textColor = UntoggledGroupTitleColor },
-                onNormal = { textColor = GroupTitleColor },
-                onFocused =  { textColor = GroupTitleColor },
-                onHover = { textColor = GroupTitleColor },
-                onActive = { textColor = GroupTitleColor },
-            });
-
-            if (isToggled)
-            {
-                EditorGUILayout.BeginVertical("box");
-                contents?.Invoke(); 
-                EditorGUILayout.EndVertical();
-                EditorGUILayout.Space(GroupTitleFontSize);
-            }
-        }
-        
-        #endregion
-        
     }
 }

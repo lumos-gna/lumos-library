@@ -11,87 +11,92 @@ namespace LumosLib
         private Vector2 _vector2Field;
         private Vector3 _vector3Field;
         private bool _booleanField;
-        
-        private TestEditorGroup _testGroup;
-        private bool _isToggledTestGroup;
-        
-        private TestEditorGroup _test2Group;
-        private bool _isToggledTest2Group;
-
 
         private GameObject _testObject;
         
         
-        
+        //menu name
         [MenuItem("[ ✨Lumos Lib ]/Test Editor/SAMPLE")]
         public static void Open()
         {
+            //window tab name
             OnOpen<SampleTestEditor>("SAMPLE");
         }
-
         
-        //MEMO : if you want ( create group or change properties )
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            TitleFontSize = 20;
+            base.OnEnable();
             
-            _testGroup = CreateGroup("Test");
-            _test2Group = CreateGroup("Test2");
-        }
-
-        protected override void OnGUI()
-        {
-            base.OnGUI();
+            //window sign title
+            SetTitle("SAMPLE");
             
-            DrawGroup(_testGroup, () =>
+            //default : yellow
+            SetTitleColor(Color.black);
+            
+            //default : 20
+            SetTitleFontSize(20);
+            
+            AddGroup("Test", false, group =>
             {
-                _testGroup.DrawField("Int" ,ref _intField);
-                _testGroup.DrawSpaceLine();
-                _testGroup.DrawField("Float",ref _floatField);
-                _testGroup.DrawField("String", ref _stringField);
-                _testGroup.DrawField("Vector2", ref _vector2Field);
-                _testGroup.DrawField("Vector3", ref _vector3Field);
-                _testGroup.DrawField("Vector3", ref _vector3Field);
-                _testGroup.DrawField("Vector3", ref _vector3Field);
+                group.DrawField("Int" ,ref _intField);
+                group.DrawSpaceLine();
+                group.DrawField("Float",ref _floatField);
+                group.DrawField("String", ref _stringField);
+                group.DrawField("Vector2", ref _vector2Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                group.DrawField("Vector3", ref _vector3Field);
                 // MEMO : onClick call back => checked toggle
-                _testGroup.DrawField("Boolean", ref _booleanField, null);
-                _testGroup.DrawButton("Test Click", () =>
+                group.DrawField("Boolean", ref _booleanField, null);
+                group.DrawButton("Test Click", () =>
                 {
                     Debug.Log("Test click");
                 });
-            });
-            
-            DrawToggleGroup(_testGroup, ref _isToggledTestGroup, () =>
-            {
-                _testGroup.DrawField("Int" ,ref _intField);
-                _testGroup.DrawSpaceLine();
-                _testGroup.DrawField("Float",ref _floatField);
-                _testGroup.DrawField("String", ref _stringField);
-                _testGroup.DrawField("Vector2", ref _vector2Field);
-                _testGroup.DrawField("Vector3", ref _vector3Field);
-                _testGroup.DrawField("Boolean", ref _booleanField, null);
-                _testGroup.DrawButton("Test Click", () =>
-                {
-                    Debug.Log("Test click");
-                });
-            });
-            
-            DrawToggleGroup(_test2Group, ref _isToggledTest2Group, () =>
-            {
-                _test2Group.DrawField("Int" ,ref _intField);
-                _test2Group.DrawSpaceLine();
-                _test2Group.DrawField("Float",ref _floatField);
-                _test2Group.DrawField("String", ref _stringField);
-                _test2Group.DrawField("Vector2", ref _vector2Field);
-                _test2Group.DrawField("Vector3", ref _vector3Field);
-                _test2Group.DrawField("Boolean", ref _booleanField, null);
-                _test2Group.DrawButton("Test Click", () =>
-                {
-                    Debug.Log("Test click");
-                });
-            });
+            })
+            //default : cyan
+            .SetTitleColor(true, Color.green)
+            //default : gray
+            .SetTitleColor(false, Color.red)
+            //default : 12
+            .SetTitleFontSize(12);
 
-            FinishDraw();
+
+            AddGroup("Test2", true, group =>
+            {
+                group.DrawField("Int", ref _intField);
+                group.DrawSpaceLine();
+                group.DrawField("Float", ref _floatField);
+                group.DrawField("String", ref _stringField);
+                group.DrawField("Vector2", ref _vector2Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                // MEMO : onClick call back => checked toggle
+                group.DrawField("Boolean", ref _booleanField, null);
+                group.DrawButton("Test Click", () =>
+                {
+                    Debug.Log("Test click");
+                });
+            });
+            
+            AddGroup("Test3", true, group =>
+            {
+                group.DrawField("Int", ref _intField);
+                group.DrawSpaceLine();
+                group.DrawField("Float", ref _floatField);
+                group.DrawField("String", ref _stringField);
+                group.DrawField("Vector2", ref _vector2Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                group.DrawField("Vector3", ref _vector3Field);
+                // MEMO : onClick call back => checked toggle
+                group.DrawField("Boolean", ref _booleanField, null);
+                group.DrawButton("Test Click", () =>
+                {
+                    Debug.Log("Test click");
+                });
+            })
+            .SetRuntimeOnly(true);
         }
     }
 }
