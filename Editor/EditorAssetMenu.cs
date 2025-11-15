@@ -14,7 +14,7 @@ namespace LumosLib
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/Global", false, int.MinValue)]
         public static void CreateGlobalScript()
         {
-            CreateScript("Global.cs", File.ReadAllText(Constant.PathGlobalHubTemplate));
+            CreateScript("Global.cs", File.ReadAllText(Constant.PathGlobalTemplate));
         }
         
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/SceneManager", false, int.MinValue)]
