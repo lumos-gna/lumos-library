@@ -7,18 +7,9 @@ namespace LumosLib
     //[CreateAssetMenu(fileName = "#Name#TweenPreset", menuName = "[ ✨Lumos Lib ]/Scriptable Object/Tween Preset/#Name#")]
     public abstract class BaseTweenPreset : ScriptableObject
     {
-        protected float Duration
-        {
-            get
-            {
-                float duration = _useRandomDuration 
-                    ? _duration * Random.Range(1 - _durationRandomFactor, 1 + _durationRandomFactor) 
-                    : _duration;
+        #region >--------------------------------------------------- FIELD
 
-                return duration;
-            }
-        }
-
+        
         [Title("Base")]
         [SerializeField] private Ease _ease;
         [SerializeField] private float _duration;
@@ -27,18 +18,41 @@ namespace LumosLib
 
         [PropertySpace(20f)] 
         [Title("Loop")] 
-        [SerializeField] private bool _isLoop;
-        [SerializeField, ShowIf("_isLoop")] private LoopType _loopType;
-        [SerializeField, ShowIf("_isLoop")] private int _loopCount;
+        [SerializeField] private bool _useLoop;
+        [SerializeField, ShowIf("_useLoop")] private LoopType _loopType;
+        [SerializeField, ShowIf("_useLoop")] private int _loopCount;
+        
 
+        #endregion
+        #region >--------------------------------------------------- GET
 
-        public Tween GetTween(GameObject targetObject)
+        public Ease GetEase()
         {
-            var tween = SetTween(targetObject)?.SetEase(_ease);
-            
-            return _isLoop ? tween.SetLoops(_loopCount, _loopType) : tween;
+            return _ease;
+        }
+
+        public bool GetUseLoop()
+        {
+            return _useLoop;
+        }
+
+        public LoopType GetLoopType()
+        {
+            return  _loopType;
+        }
+
+        public int GetLoopCount()
+        {
+            return  _loopCount;
         }
         
-        protected abstract Tween SetTween(GameObject targetObject);
+        public float GetDuration()
+        {
+            return _useRandomDuration 
+                ? _duration * Random.Range(1 - _durationRandomFactor, 1 + _durationRandomFactor) 
+                : _duration;
+        }
+
+        #endregion
     }
 }

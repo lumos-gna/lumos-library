@@ -31,7 +31,7 @@ namespace LumosLib
             SetTitle("SAMPLE");
             
             //default : yellow
-            SetTitleColor(Color.black);
+            SetTitleColor(Color.white);
             
             //default : 20
             SetTitleFontSize(20);

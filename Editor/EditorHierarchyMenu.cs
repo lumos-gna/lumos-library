@@ -6,7 +6,7 @@ namespace LumosLib
 {
     public class EditorHierarchyMenu
     {
-        [MenuItem("GameObject/[ ✨Lumos Lib ]/UI/Sequence Preset Trigger", false, 0)]
+        /*[MenuItem("GameObject/[ ✨Lumos Lib ]/UI/Sequence Preset Trigger", false, 0)]
         private static void CreateCustomScriptObject(MenuCommand menuCommand)
         {
             CreateNewObject(menuCommand, "SequencePresetTrigger", new []
@@ -14,7 +14,7 @@ namespace LumosLib
                 typeof(RectTransform),
                 typeof(UISequencePresetTrigger),
             });
-        }
+        }*/
 
 
         private static void CreateNewObject(MenuCommand menuCommand, string name, Type[] addComponents)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using DOTween;
 using TriInspector;
 
 namespace LumosLib
@@ -7,21 +8,37 @@ namespace LumosLib
     [CreateAssetMenu(fileName = "ScaleTweenPreset", menuName = "[ ✨Lumos Lib ]/Scriptable Object/Tween Preset/Scale", order = int.MinValue)]
     public class ScaleTweenPreset : BaseTweenPreset
     {
+        #region >--------------------------------------------------- FIELD
+
+
+        
         [PropertySpace(20f)]
         [Title("Scale")]
-        [SerializeField] private Vector2 _targetScale;
-        [SerializeField] private bool _useInitialScale;
-        [SerializeField, ShowIf("_useInitialScale")] private Vector2 _initialScale;
-
-
-        protected override Tween SetTween(GameObject targetObject)
+        
+        [SerializeField] private Vector3 _scale;
+        
+        [SerializeField] private bool _useInitScale;
+        [SerializeField, ShowIf("_useInitScale")] private Vector3 _initScale;
+        
+        
+        #endregion
+        #region >--------------------------------------------------- GET
+       
+        public Vector3 GetScale()
         {
-            if (_useInitialScale)
-            {
-                targetObject.transform.localScale = _initialScale;
-            }
-                
-            return targetObject.transform.DOScale(_targetScale, Duration);
+            return _scale;
         }
+
+        public bool GetUseInitScale()
+        {
+            return _useInitScale;
+        }
+
+        public Vector3 GetInitScale()
+        {
+            return _initScale;
+        }
+
+        #endregion
     }
 }
