@@ -31,6 +31,7 @@
 * [ Data ](https://www.notion.so/Data-2a846d596561802ca1f7fa96503e7c5e?source=copy_link)
 * [ TestEditor ](https://www.notion.so/Test-Editor-2a846d596561801bb3abd2e4f4f57ebf?source=copy_link)
 * [ Event ](https://www.notion.so/Event-2b346d59656180918aeddf5a20c0d350?source=copy_link)
+* [ Input ](https://www.notion.so/Input-2b346d59656180cf9248c92e8c5d465a?source=copy_link)
 
 ### DOTween
 * [ Tween Preset ](https://www.notion.so/Tween-Preset-2aa46d596561805a81f0d38f690ea271?source=copy_link)
