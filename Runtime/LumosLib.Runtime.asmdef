@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "TriInspector",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

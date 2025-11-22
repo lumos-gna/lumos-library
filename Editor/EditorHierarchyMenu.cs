@@ -6,15 +6,15 @@ namespace LumosLib
 {
     public class EditorHierarchyMenu
     {
-        /*[MenuItem("GameObject/[ ✨Lumos Lib ]/UI/Sequence Preset Trigger", false, 0)]
-        private static void CreateCustomScriptObject(MenuCommand menuCommand)
+        [MenuItem("GameObject/[ ✨Lumos Lib ]/World Button", false, 0)]
+        private static void CreateWorldButton(MenuCommand menuCommand)
         {
-            CreateNewObject(menuCommand, "SequencePresetTrigger", new []
+            CreateNewObject(menuCommand, "WorldButton", new []
             {
-                typeof(RectTransform),
-                typeof(UISequencePresetTrigger),
+                typeof(SpriteRenderer),
+                typeof(WorldButton),
             });
-        }*/
+        }
 
 
         private static void CreateNewObject(MenuCommand menuCommand, string name, Type[] addComponents)

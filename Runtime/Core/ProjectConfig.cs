@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using TriInspector;
+using UnityEngine.InputSystem;
 
 namespace LumosLib
 {
@@ -17,6 +18,10 @@ namespace LumosLib
         [field: Title("Data")]
         [field: SerializeField] public TableType DataTableType { get; private set; }
         [field: SerializeField, HideIf("DataTableType", TableType.None)] public string TablePath { get; private set; }
+        
+        [field: PropertySpace(20f)]
+        [field: Title("Input")]
+        [field: SerializeField] public InputActionAsset InputAsset { get; private set; }
         
         
         [field: PropertySpace(20f)]

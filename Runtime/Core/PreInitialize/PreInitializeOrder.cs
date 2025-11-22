@@ -7,5 +7,6 @@
         Pool,
         UI,
         Audio,
+        Input,
     }
 }

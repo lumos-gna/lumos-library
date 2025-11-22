@@ -131,6 +131,7 @@ namespace LumosLib
             CreateInternalResource<PoolManager>();
             CreateInternalResource<AudioManager>();
             CreateInternalResource<UIManager>();
+            CreateInternalResource<InputManager>();
         }
         
         private static void CreateInternalResource<T>() where T : MonoBehaviour
