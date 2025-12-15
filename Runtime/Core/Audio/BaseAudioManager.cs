@@ -5,14 +5,15 @@ using UnityEngine.Audio;
 
 namespace LumosLib
 {
-    public abstract class BaseAudioManager : MonoBehaviour, IPreInitializer, IAudioManager
+    public abstract class BaseAudioManager : MonoBehaviour, IPreInitializable, IAudioManager
     {
         #region >--------------------------------------------------- FIELD
         
-        
-        [SerializeField] protected AudioPlayer _playerPrefab;
+        [SerializeField] protected BaseResourceManager _resourceManager;
+        [SerializeField] protected BasePoolManager _poolManager;
+        [SerializeField] protected AudioPlayer _audioPlayerPrefab;
+        [SerializeField] protected AudioMixer _mixer;
         protected readonly Dictionary<string, SoundAsset> _assetResources = new();
-        protected AudioMixer _mixer;
         
         
         #endregion
@@ -21,17 +22,13 @@ namespace LumosLib
         
         public virtual IEnumerator InitAsync()
         {
-            var resourceManager = GlobalService.GetInternal<IResourceManager>();
-            var resources = resourceManager.LoadAll<SoundAsset>("");
+            var soundResources = _resourceManager.LoadAll<SoundAsset>("");
             
-            foreach (var resource in resources)
+            foreach (var resource in soundResources)
             {
                 _assetResources[resource.name] = resource;
             }
 
-            _mixer =  Project.Config.Mixer;
-            
-            
             GlobalService.Register<IAudioManager>(this);
             DontDestroyOnLoad(gameObject);
             

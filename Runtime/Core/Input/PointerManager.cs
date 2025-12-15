@@ -7,12 +7,10 @@ using UnityEngine.InputSystem;
 
 namespace LumosLib
 {
-    public class PointerManager : MonoBehaviour, IPreInitializer
+    public class PointerManager : MonoBehaviour, IPreInitializable
     {
         #region >--------------------------------------------------- PROPERTIE
-
         
-
 
         public bool IsOverUI { get; private set; } 
 
@@ -20,7 +18,9 @@ namespace LumosLib
         #endregion
         #region >--------------------------------------------------- FIELD
 
-    
+
+        [SerializeField] private InputActionReference _pointerPosActionReference;
+        [SerializeField] private InputActionReference _pointerClickActionReference;
         private Vector2 _pointerPos;
         private Coroutine _pointerClickCoroutine;
         
@@ -51,7 +51,7 @@ namespace LumosLib
         
         public IEnumerator InitAsync()
         {
-            var pointerClickRef = Project.Config.PointerClickActionReference;
+            var pointerClickRef = _pointerClickActionReference;
             
             if (pointerClickRef != null)
             {
@@ -60,7 +60,7 @@ namespace LumosLib
                 pointerClickRef.action.actionMap.Enable(); 
             }
             
-            var pointerPosRef = Project.Config.PointerPosActionReference;
+            var pointerPosRef = _pointerPosActionReference;
             if (pointerPosRef != null)
             {
                 //pointerPosRef.action.performed += context =>  _pointerPos =  context.ReadValue<Vector2>();

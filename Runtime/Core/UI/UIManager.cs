@@ -5,11 +5,13 @@ using System;
 
 namespace LumosLib
 {
-    public class UIManager : MonoBehaviour, IUIManager, IPreInitializer
+    public class UIManager : MonoBehaviour, IUIManager, IPreInitializable
     {
         #region >--------------------------------------------------- FIELDS
 
-
+        
+        [SerializeField] private BaseResourceManager _resourceManager;
+        
         private Dictionary<Type, UIBase> _createdUIs = new();
         private Dictionary<Type, UIBase> _prefabUIs = new();
 
@@ -20,7 +22,7 @@ namespace LumosLib
         
         public IEnumerator InitAsync()
         {
-            var uiGlobalPrefabs =  GlobalService.GetInternal<IResourceManager>().LoadAll<UIBase>("");
+            var uiGlobalPrefabs =  _resourceManager.LoadAll<UIBase>("");
 
             for (int i = 0; i < uiGlobalPrefabs.Length; i++)
             {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LumosLib
 {
-    public class TutorialManager : MonoBehaviour, IPreInitializer
+    public class TutorialManager : MonoBehaviour, IPreInitializable
     {
         #region >--------------------------------------------------- FIELD
 

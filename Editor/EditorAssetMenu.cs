@@ -1,13 +1,29 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
 namespace LumosLib
 {
-   
     public static class EditorAssetMenu
     {
+        #region >--------------------------------------------------- CORE
+
+
+        private static string GetCurrentPath()
+        {
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            if (string.IsNullOrEmpty(path))
+                path = "Assets";
+            else if (!Directory.Exists(path))
+                path = Path.GetDirectoryName(path);
+
+            return path;
+        }
+        
+        
+        #endregion
         #region >--------------------------------------------------- SCRIPT
         
         
@@ -37,11 +53,7 @@ namespace LumosLib
         
         private static void CreateScript(string scriptName, string template)
         {
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            if (string.IsNullOrEmpty(path))
-                path = "Assets";
-            else if (!Directory.Exists(path))
-                path = Path.GetDirectoryName(path);
+            string path = GetCurrentPath();
             
             
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
@@ -80,11 +92,7 @@ namespace LumosLib
         
         private static void CreateSO<T>(string assetName) where T : ScriptableObject
         {
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            if (string.IsNullOrEmpty(path))
-                path = "Assets";
-            else if (!Directory.Exists(path))
-                path = Path.GetDirectoryName(path);
+            string path = GetCurrentPath();
             
             
             T asset = ScriptableObject.CreateInstance<T>();
@@ -97,6 +105,86 @@ namespace LumosLib
         }
         
         
+        #endregion
+        #region >--------------------------------------------------- PREFAB
+
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Empty", false, int.MinValue)]
+        public static void CreateEmptyPrefab()
+        {
+            CreatePrefab(new GameObject("Empty"));
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Resource", false, int.MinValue)]
+        public static void CreateResourceManagerPrefab()
+        {
+            CreatePrefab<ResourceManager>();
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Audio", false, int.MinValue)]
+        public static void CreateAudioManagerPrefab()
+        {
+            CreatePrefab<AudioManager>();
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/UI", false, int.MinValue)]
+        public static void CreateUIManagerPrefab()
+        {
+            CreatePrefab<UIManager>();
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Data", false, int.MinValue)]
+        public static void CreateDataManagerPrefab()
+        {
+            CreatePrefab<DataManager>();
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Pool", false, int.MinValue)]
+        public static void CreatePoolManagerPrefab()
+        {
+            CreatePrefab<PoolManager>();
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Pointer", false, int.MinValue)]
+        public static void CreatePointerManagerPrefab()
+        {
+            CreatePrefab<PointerManager>();
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Tutorial", false, int.MinValue)]
+        public static void CreateTutorialManagerPrefab()
+        {
+            CreatePrefab<TutorialManager>();
+        }
+        
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Audio Player", false, int.MinValue)]
+        public static void CreateAudioPlayerPrefab()
+        {
+            CreatePrefab<AudioPlayer>();
+        }
+        
+        private static GameObject CreatePrefab<T>() where T : MonoBehaviour
+        {
+            string typeName = typeof(T).Name;
+            
+            GameObject obj = new GameObject(typeName);
+            obj.AddComponent<T>();
+
+            CreatePrefab(obj);
+
+            return obj;
+        }
+
+        private static void CreatePrefab(GameObject obj)
+        {
+            string prefabPath = Path.Combine(GetCurrentPath(), obj.name + ".prefab");
+
+            PrefabUtility.SaveAsPrefabAsset(obj, prefabPath);
+            Object.DestroyImmediate(obj);
+            AssetDatabase.Refresh();
+        }
+        
+
         #endregion
     }
 }

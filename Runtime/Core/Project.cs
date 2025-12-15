@@ -53,7 +53,7 @@ namespace LumosLib
             
             _elementInitStartMS = Time.realtimeSinceStartup;
 
-            var preInitializes = new List<IPreInitializer>();
+            var preInitializes = new List<IPreInitializable>();
             
             for (int i = 0; i < Config.PreloadObjects.Count; i++)
             {
@@ -62,7 +62,7 @@ namespace LumosLib
 
                 var preloadObj = Object.Instantiate(Config.PreloadObjects[i]).gameObject;
 
-                if (preloadObj.TryGetComponent(out IPreInitializer initializer))
+                if (preloadObj.TryGetComponent(out IPreInitializable initializer))
                 {
                     preInitializes.Add(initializer);
                 }

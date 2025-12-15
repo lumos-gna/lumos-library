@@ -34,19 +34,8 @@ namespace LumosLib
         #endregion
         #region >--------------------------------------------------- GET
 
-        //for project
-        public static T Get<T>() where T : class
-        {
-            return GetService<T>();
-        }
         
-        //for package
-        internal static T GetInternal<T>() where T : class
-        {
-            return GetService<T>();
-        }
-
-        private static T GetService<T>() where T : class
+        public static T Get<T>() where T : class
         {
             if (_services.TryGetValue(typeof(T), out var service))
             {

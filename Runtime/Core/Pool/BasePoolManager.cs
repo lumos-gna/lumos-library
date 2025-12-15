@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 namespace LumosLib
 {
-    public abstract class BasePoolManager : MonoBehaviour, IPreInitializer, IPoolManager
+    public abstract class BasePoolManager : MonoBehaviour, IPreInitializable, IPoolManager
     {
         #region >--------------------------------------------------- FIELD
  

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace LumosLib
 {
@@ -12,8 +11,6 @@ namespace LumosLib
         private readonly Dictionary<int, AudioPlayer> _bgmPlayers = new();
         private readonly HashSet<AudioPlayer> _activePlayers = new();
         
-        private IPoolManager _poolManager;
-        
         
         #endregion
         #region >--------------------------------------------------- INIT
@@ -22,8 +19,6 @@ namespace LumosLib
         public override IEnumerator InitAsync()
         {
            yield return base.InitAsync();
-           
-           _poolManager = GlobalService.GetInternal<IPoolManager>();
         }
 
         #endregion
@@ -37,7 +32,7 @@ namespace LumosLib
 
         private AudioPlayer CreateNewPlayer()
         {
-            var player = _poolManager.Get(_playerPrefab);
+            var player = _poolManager.Get(_audioPlayerPrefab);
             
             _activePlayers.Add(player);
             

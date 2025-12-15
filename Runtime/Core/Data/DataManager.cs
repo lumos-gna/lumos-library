@@ -19,7 +19,7 @@ namespace LumosLib
             var tableLoader = GetLoader();
             if (tableLoader == null) yield break;
 
-            tableLoader.SetPath(Project.Config.TablePath);
+            tableLoader.SetPath(_tablePath);
 
             yield return tableLoader.LoadJsonAsync();
             if (tableLoader.Json == "") yield break;
@@ -74,9 +74,9 @@ namespace LumosLib
         
         private BaseDataLoader GetLoader()
         {
-            return Project.Config.DataTableType switch
+            return _dataTableType switch
             {
-                ProjectConfig.TableType.GoogleSheet => new GoogleSheetLoader(),
+                DataTableType.GoogleSheet => new GoogleSheetLoader(),
                 _ => null,
             };
         }

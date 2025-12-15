@@ -2,14 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TriInspector;
 using UnityEngine;
 
 namespace LumosLib
 {
-    public abstract class BaseDataManager : MonoBehaviour, IPreInitializer, IDataManager
+    public abstract class BaseDataManager : MonoBehaviour, IPreInitializable, IDataManager
     {
         #region >--------------------------------------------------- FIELD
         
+        protected enum DataTableType
+        {
+            None,
+            GoogleSheet,
+            Local
+        }
+
+        [SerializeField] protected DataTableType _dataTableType;
+        [SerializeField, HideIf("_dataTableType", DataTableType.None)] protected string _tablePath;
         
         protected Dictionary<Type, Dictionary<int, BaseData>> _loadDatas = new();
         

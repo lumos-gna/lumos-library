@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LumosLib
 {
-    public abstract class BaseResourceManager : MonoBehaviour, IPreInitializer, IResourceManager
+    public abstract class BaseResourceManager : MonoBehaviour, IPreInitializable, IResourceManager
     {
         #region  >--------------------------------------------------- FIELD
 
