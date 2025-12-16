@@ -4,9 +4,10 @@ public static class Global
 {
     public static IUIManager UI => GlobalService.Get<IUIManager>();
     public static IAudioManager Audio => GlobalService.Get<IAudioManager>();
-    public static IDataManager Data => GlobalService.Get<IDataManager>();
+    public static IDataTableManager Data => GlobalService.Get<IDataTableManager>();
     public static IResourceManager Resource => GlobalService.Get<IResourceManager>();
     public static IPoolManager Pool => GlobalService.Get<IPoolManager>();
-    public static IEventBus Event => GlobalService.Get<IEventBus>();
-    public static PointerManager Pointer => GlobalService.Get<PointerManager>();
+    public static IEventManager Event => GlobalService.Get<IEventManager>();
+    public static IPointerManager Pointer => GlobalService.Get<IPointerManager>();
+    public static ITutorialManager TutorialManager => GlobalService.Get<ITutorialManager>();
 }
