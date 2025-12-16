@@ -115,6 +115,12 @@ namespace LumosLib
             CreatePrefab(new GameObject("Empty"));
         }
         
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Event", false, int.MinValue)]
+        public static void CreateEventManagerPrefab()
+        {
+            CreatePrefab<EventManager>();
+        }
+        
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Resource", false, int.MinValue)]
         public static void CreateResourceManagerPrefab()
         {
@@ -133,8 +139,8 @@ namespace LumosLib
             CreatePrefab<UIManager>();
         }
         
-        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Data", false, int.MinValue)]
-        public static void CreateDataManagerPrefab()
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Data Table", false, int.MinValue)]
+        public static void CreateDataTableManagerPrefab()
         {
             CreatePrefab<DataTableManager>();
         }

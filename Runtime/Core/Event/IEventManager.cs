@@ -2,7 +2,7 @@
 
 namespace LumosLib
 {
-    public interface IEventBus
+    public interface IEventManager
     {
         void Subscribe<T>(Action<T> listener);
         void Unsubscribe<T>(Action<T> listener);
