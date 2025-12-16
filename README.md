@@ -9,7 +9,9 @@
 
 ![Scene](https://github.com/user-attachments/assets/e5b8cb62-61d4-415b-b8ae-fc7da5f223cd)
 > [!NOTE]
-> 어느 씬에서든 테스트를 용이하게 하기 위해 BaseSceneManager 를 상속받는 컴포넌트가 씬에 하나라도 있으면 씬이 로드 된 후 전체적인 사전 비동기 초기화를 진행하고 이후 해당 SceneManager 의 OnInitAsync 구현을 통해 씬에서의 초기화 & 동작들을 수행 할 수 있습니다. 그리고 싱글톤으로 구현되어 씬마다 하나의 SceneManager 를 보장 받습니다. 이로 인해 Awake() 와 Start() 에서의 외부 접근은 보장 받을 수 없습니다.
+> 어느 씬에서든 BaseSceneManager 를 상속받는 컴포넌트가 씬에 하나라도 있으면 씬이 로드 된 후 전체적인 사전 비동기 초기화를 진행하고, <br>
+이후 해당 SceneManager 의 OnInitAsync 구현을 통해 씬에서의 초기화 & 동작들을 수행 할 수 있습니다. <br>
+이로 인해 Awake() 와 Start() 에서의 실행 순서는 보장 받을 수 없습니다.
 
 
 
@@ -32,6 +34,7 @@
 * [ TestEditor ](https://www.notion.so/Test-Editor-2a846d596561801bb3abd2e4f4f57ebf?source=copy_link)
 * [ Event ](https://www.notion.so/Event-2b346d59656180918aeddf5a20c0d350?source=copy_link)
 * [ Input ](https://www.notion.so/Input-2b346d59656180cf9248c92e8c5d465a?source=copy_link)
+* [ Tutorial ](https://www.notion.so/Tutorial-2cb46d5965618079835ae312959c3118?source=copy_link)
 
 ### DOTween
 * [ Tween Preset ](https://www.notion.so/Tween-Preset-2aa46d596561805a81f0d38f690ea271?source=copy_link)
