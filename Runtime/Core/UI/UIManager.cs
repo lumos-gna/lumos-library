@@ -19,6 +19,16 @@ namespace LumosLib
 
 
         #endregion
+        #region >--------------------------------------------------- UNITY
+
+
+        private void Awake()
+        {
+            GlobalService.Register<IUIManager>(this);
+        }
+        
+        
+        #endregion
         #region >--------------------------------------------------- INIT
         
         
@@ -39,9 +49,6 @@ namespace LumosLib
 
                 _prefabUIs[uiGlobalPrefabs[i].GetType()] = value;
             }
-            
-            GlobalService.Register<IUIManager>(this);
-            DontDestroyOnLoad(gameObject);
             
             onComplete?.Invoke(true);
             yield break;

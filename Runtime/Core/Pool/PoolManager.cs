@@ -16,14 +16,21 @@ namespace LumosLib
 
         
         #endregion
+        #region >--------------------------------------------------- UNITY
+
+
+        private void Awake()
+        {
+            GlobalService.Register<IPoolManager>(this);
+        }
+        
+        
+        #endregion
         #region >--------------------------------------------------- INIT
         
         
         public IEnumerator InitAsync(Action<bool> onComplete)
         {
-            GlobalService.Register<IPoolManager>(this);
-            DontDestroyOnLoad(gameObject);
-
             onComplete?.Invoke(true);
             yield break;
         }

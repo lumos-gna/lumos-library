@@ -15,14 +15,21 @@ namespace LumosLib
         
         
         #endregion
+        #region >--------------------------------------------------- UNITY
+
+
+        private void Awake()
+        {
+            GlobalService.Register<IResourceManager>(this);
+        }
+        
+        
+        #endregion
         #region  >--------------------------------------------------- INIT
         
         
         public IEnumerator InitAsync(Action<bool> onComplete)
         {
-            GlobalService.Register<IResourceManager>(this);
-            DontDestroyOnLoad(gameObject);
-            
             onComplete?.Invoke(true);
             
             yield break;

@@ -16,7 +16,12 @@ namespace LumosLib
     
         #endregion
         #region >--------------------------------------------------- UNITY
-
+        
+        private void Awake()
+        {
+            GlobalService.Register<ITutorialManager>(this);
+        }
+        
         private void Update()
         {
             if (_curTutorial != null)
@@ -36,9 +41,6 @@ namespace LumosLib
     
         public IEnumerator InitAsync(Action<bool> onComplete)
         {
-            GlobalService.Register<ITutorialManager>(this);
-            DontDestroyOnLoad(gameObject);
-        
             onComplete?.Invoke(true);
             
             yield break;

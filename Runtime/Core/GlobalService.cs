@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace LumosLib
 {
@@ -19,6 +20,11 @@ namespace LumosLib
         public static void Register<T>(T service) where T : class
         {
             DestroyOldMonoService<T>();
+
+            if (service is MonoBehaviour monoService)
+            {
+                Object.DontDestroyOnLoad(monoService.gameObject);
+            }
             
             _services[typeof(T)] = service;
         }

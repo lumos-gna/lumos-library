@@ -27,7 +27,12 @@ namespace LumosLib
         
         #endregion
         #region >--------------------------------------------------- UNITY
-        
+
+
+        private void Awake()
+        {
+            GlobalService.Register<IPointerManager>(this);
+        }
         
         private void LateUpdate()
         {
@@ -62,9 +67,6 @@ namespace LumosLib
                 pointerPosRef.action.performed += SetPointerPos;
                 pointerPosRef.action.actionMap.Enable(); 
             }
-            
-            GlobalService.Register<IPointerManager>(this);
-            DontDestroyOnLoad(gameObject);
             
             onComplete?.Invoke(true);
             yield break;

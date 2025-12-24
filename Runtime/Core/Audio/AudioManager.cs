@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TriInspector;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -23,6 +22,16 @@ namespace LumosLib
         [Title("REQUIREMENT")]
         [ShowInInspector, HideReferencePicker, ReadOnly, LabelText("IResourceManager")] private IResourceManager _resourceManager;
         [ShowInInspector, HideReferencePicker, ReadOnly, LabelText("IPoolManager")] private IPoolManager _poolManager;
+        
+        
+        #endregion
+        #region >--------------------------------------------------- UNITY
+
+
+        private void Awake()
+        {
+            GlobalService.Register<IAudioManager>(this);
+        }
         
         
         #endregion
@@ -53,8 +62,6 @@ namespace LumosLib
                 _assetResources[resource.name] = resource;
             }
 
-            GlobalService.Register<IAudioManager>(this);
-            DontDestroyOnLoad(gameObject);
             
             onComplete?.Invoke(true);
             yield break;

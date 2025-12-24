@@ -21,6 +21,16 @@ namespace LumosLib
         
         
         #endregion
+        #region >--------------------------------------------------- UNITY
+
+
+        private void Awake()
+        {
+            GlobalService.Register<IDataTableManager>(this);
+        }
+        
+        
+        #endregion
         #region >--------------------------------------------------- INIT
         
         
@@ -83,9 +93,6 @@ namespace LumosLib
                     onComplete?.Invoke(false);
                 }
             }
-            
-            GlobalService.Register<IDataTableManager>(this);
-            DontDestroyOnLoad(gameObject);
             
             onComplete?.Invoke(true);
         }
