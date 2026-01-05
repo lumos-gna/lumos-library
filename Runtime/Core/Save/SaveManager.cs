@@ -7,8 +7,6 @@ using UnityEngine;
 
 namespace LumosLib
 {
-    
-    
     public class SaveManager : MonoBehaviour, IPreInitializable, ISaveManager
     {
         #region >--------------------------------------------------- FIELD
@@ -52,20 +50,16 @@ namespace LumosLib
         #region >--------------------------------------------------- CORE
         
         
-        public void Register<T>(T data) where T : ISaveData
-        {
-            _saveDataDict[typeof(T)] = data;
-        }
-        
-     
-        public async Task SaveAsync<T>() where T : ISaveData
+        public async Task SaveAsync<T>(T data) where T : ISaveData
         {
             var type = typeof(T);
-            
-            if (_saveDataDict.TryGetValue(type, out var data))
+
+            if (!_saveDataDict.ContainsKey(type))
             {
-                await _saveStorage.SaveAsync(data);
+                _saveDataDict[typeof(T)] = data;
             }
+            
+            await _saveStorage.SaveAsync(data);
         }
         
         public async Task<T> LoadAsync<T>() where T : ISaveData
