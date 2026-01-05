@@ -7,102 +7,136 @@ namespace LumosLib
 {
     public static class PreInitializer
     {
-        #region >--------------------------------------------------- PROPERTIE
+        #region >--------------------------------------------------- PROPERTIES
 
-        public static LumosLibSetting Setting { get; private set; }
         
-        public static float InitElapsedMS => (float)((Time.realtimeSinceStartup - _elementInitStartMS) * 1000f);
-        public static float InitProgress => (float)_curInitCount / _maxInitCount;
-        private static string InitResultText => $"( {_curInitCount}/{_maxInitCount} ) ( {InitElapsedMS:F3} ms ) ";
+        public static bool IsInitialized => _isInitialized;
 
-    
+        public static float InitElapsedMS =>
+            (float)((Time.realtimeSinceStartup - _elementInitStartTime) * 1000f);
+
+        public static float InitProgress =>
+            _maxInitCount == 0 ? 1f : (float)_curInitCount / _maxInitCount;
+
+        
         #endregion
-        #region >--------------------------------------------------- FIELD
+        #region >--------------------------------------------------- FIELDS
 
         
-        private static double _elementInitStartMS;
-        
+        private static double _elementInitStartTime;
+
         private static int _curInitCount;
         private static int _maxInitCount;
-        
-        private static bool _isStartedInitAsync;
-        
         private static int _failCount;
-        
-        private static UniTask _initTask;
+
+        private static bool _isInitializing;
         private static bool _isInitialized;
 
+        private static UniTaskCompletionSource _initBarrier;
+        private static LumosLibSettings _settings;
         
+
         #endregion
         #region >--------------------------------------------------- INIT
 
         
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        public static UniTask InitializeAsync()
+        private static void Boot()
         {
-            Setting = Resources.Load<LumosLibSetting>(nameof(LumosLibSetting));
-            if (_isInitialized || !Setting.UsePreload)
-            {
-                return UniTask.CompletedTask;
-            }
+            _settings = Resources.Load<LumosLibSettings>(nameof(LumosLibSettings));
             
-            if (_initTask.Status == UniTaskStatus.Pending)
-                return _initTask;
+            if (_isInitializing || _isInitialized || _settings == null)
+                return;
 
-            
-            _initTask = Initialize();
-            return _initTask;
+            if (!_settings.UsePreload)
+                return;
+
+
+            _isInitializing = true;
+            _initBarrier = new UniTaskCompletionSource();
+
+            Initialize().Forget();
+        }
+        
+        public static UniTask WaitInitAsync()
+        {
+            if (_isInitialized)
+                return UniTask.CompletedTask;
+
+            return _initBarrier.Task;
         }
 
         private static async UniTask Initialize()
         {
-            DebugUtil.Log($"", " INIT : START ");
-            
-            _elementInitStartMS = Time.realtimeSinceStartup;
-            
+            DebugUtil.Log("", " INIT : START ");
+
+            _elementInitStartTime = Time.realtimeSinceStartup;
+
             var initTargets = new List<IPreInitializable>();
-            
-            for (int i = 0; i < Setting.PreloadObjects.Count; i++)
+
+            foreach (var prefab in _settings.PreloadObjects)
             {
-                var preloadPrefab = Setting.PreloadObjects[i];
-                if(preloadPrefab == null) continue;
+                if (prefab == null)
+                    continue;
 
-                var preloadObj = Object.Instantiate(Setting.PreloadObjects[i]).gameObject;
+                var obj = Object.Instantiate(prefab);
 
-                if (preloadObj.TryGetComponent(out IPreInitializable initializer))
+                if (obj.TryGetComponent(out IPreInitializable initializer))
                 {
                     initTargets.Add(initializer);
                 }
             }
-            
-            _maxInitCount = initTargets.Count;
-            
-            for (int i = 0; i < initTargets.Count; i++)
-            {
-                var target = initTargets[i];
-                
-                _elementInitStartMS = Time.realtimeSinceStartup;
 
-                bool isSuccess = await target.InitAsync();
-                
+            _maxInitCount = initTargets.Count;
+
+            foreach (var target in initTargets)
+            {
+                _elementInitStartTime = Time.realtimeSinceStartup;
+
+                bool success = false;
+                try
+                {
+                    success = await target.InitAsync();
+                }
+                catch (System.Exception e)
+                {
+                    DebugUtil.LogError(e.ToString(), " INIT : EXCEPTION ");
+                }
+
                 _curInitCount++;
 
-                if (isSuccess)
+                if (success)
                 {
-                   DebugUtil.Log($" {target.GetType().Name} {InitResultText}", " INIT : SUCCESS ");
+                    DebugUtil.Log(
+                        $"{target.GetType().Name}",
+                        $" INIT : SUCCESS ({_curInitCount}/{_maxInitCount})"
+                    );
                 }
                 else
                 {
-                   DebugUtil.LogError($" {target.GetType().Name} {InitResultText}", " INIT : FAIL ");
-                   
-                   _failCount++;
+                    _failCount++;
+                    DebugUtil.LogError(
+                        $"{target.GetType().Name}",
+                        $" INIT : FAIL ({_curInitCount}/{_maxInitCount})"
+                    );
                 }
             }
-            
-            DebugUtil.Log($"", $" INIT : FINISH - COMPLETE : { _curInitCount - _failCount }, FAIL : { _failCount }");
-            _isInitialized = true;
+
+            DebugUtil.Log(
+                "",
+                $" INIT : FINISH - COMPLETE : {_curInitCount - _failCount}, FAIL : {_failCount}"
+            );
+
+            FinishInit();
         }
         
+        private static void FinishInit()
+        {
+            _isInitialized = true;
+            _isInitializing = false;
+
+            _initBarrier.TrySetResult();
+        }
         
         #endregion
     }

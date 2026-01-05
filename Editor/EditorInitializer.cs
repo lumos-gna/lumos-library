@@ -1,37 +1,37 @@
 ﻿using System.IO;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace LumosLib
 {
-    [InitializeOnLoad]
     public static class EditorInitializer
     {
-        static EditorInitializer()
+        [DidReloadScripts]
+        private static void OnScriptsReloaded()
         {
             EditorApplication.delayCall += OnEditorFullyLoaded;
+            
         }
-
+        
         private static void OnEditorFullyLoaded()
         {
-            var name = nameof(LumosLibSetting);
+            var name = nameof(LumosLibSettings);
             
-            if (Resources.Load<LumosLibSetting>(name) == null)
-            {
-                string resourcesDir = Path.Combine(Application.dataPath, "Resources");
-                if (!Directory.Exists(resourcesDir))
-                {
-                    Directory.CreateDirectory(resourcesDir);
-                }
+            if (Resources.Load<LumosLibSettings>(name) != null)
+                return;
 
-                var asset = ScriptableObject.CreateInstance<LumosLibSetting>();
-        
-                string assetPath = $"Assets/Resources/{name}.asset";
+            string resourcesDir = Path.Combine(Application.dataPath, "Resources");
+            
+            if (!Directory.Exists(resourcesDir))
+                Directory.CreateDirectory(resourcesDir);
 
-                AssetDatabase.CreateAsset(asset, assetPath);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
+            var asset = ScriptableObject.CreateInstance<LumosLibSettings>();
+            string assetPath = $"Assets/Resources/{name}.asset";
+
+            AssetDatabase.CreateAsset(asset, assetPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
 }

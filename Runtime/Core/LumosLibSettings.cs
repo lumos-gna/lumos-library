@@ -4,7 +4,7 @@ using TriInspector;
 
 namespace LumosLib
 {
-    public class LumosLibSetting : ScriptableObject
+    public class LumosLibSettings : ScriptableObject
     {
         [field: Title("Preload")]
         [field: SerializeField, LabelText("Use")] public bool UsePreload { get; private set; }
