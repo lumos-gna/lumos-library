@@ -22,9 +22,9 @@
 
 ## ℹ️기능
 
-### Core
 * [ Audio ](https://www.notion.so/Audio-2a846d596561808cbc56d22734de8ead?source=copy_link)
 * [ Data ](https://www.notion.so/Data-2a846d596561802ca1f7fa96503e7c5e?source=copy_link)
+* [ DOTween ](https://www.notion.so/Tween-Preset-2aa46d596561805a81f0d38f690ea271?source=copy_link)
 * [ Extension ](https://www.notion.so/Extension-2a846d596561800ea5ccf89d2192834e?source=copy_link)
 * [ Event ](https://www.notion.so/Event-2b346d59656180918aeddf5a20c0d350?source=copy_link)
 * [ FSM ](https://www.notion.so/FSM-2a846d596561803eaaadd4d02fd67503?source=copy_link)
@@ -37,10 +37,6 @@
 * [ Tutorial ](https://www.notion.so/Tutorial-2cb46d5965618079835ae312959c3118?source=copy_link)
 * [ TestEditor ](https://www.notion.so/Test-Editor-2a846d596561801bb3abd2e4f4f57ebf?source=copy_link)
 * [ UI ](https://www.notion.so/UI-2a846d5965618054a5b0dffe119a4b10?source=copy_link)
-
-
-### DOTween
-* [ Tween Preset ](https://www.notion.so/Tween-Preset-2aa46d596561805a81f0d38f690ea271?source=copy_link)
 
 
 <br>
