@@ -32,12 +32,6 @@ namespace LumosLib
             CreateScript("Global.cs", File.ReadAllText(Constant.PathGlobalTemplate));
         }
         
-        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/SceneManager", false, int.MinValue)]
-        public static void CreateSceneManagerScript()
-        {
-            CreateScript("NewSceneManager.cs", File.ReadAllText(Constant.PathSceneManagerTemplate));
-        }
-        
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/TestEditor", false, int.MinValue)]
         public static void CreateTestEditorScript()
         {
