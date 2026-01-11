@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace LumosLib
 {
-    public class JsonSaveStorage : BaseSaveStorage
+    [CreateAssetMenu(fileName = "Json_DataSource", menuName = "SO/Data Source/Json")]
+    public class JsonDataSource : BaseDataSource
     {
         [SerializeField] private string _folderPath;
         [SerializeField] private string _fileName;
@@ -15,7 +16,7 @@ namespace LumosLib
         private string _path;
         private JsonSerializerSettings _settings;
 
-        public override async UniTask SaveAsync<T>(T data) 
+        public override async UniTask WriteAsync<T>(T data) 
         {
             if(!_isInitialized) Init(_folderPath, _fileName);
             
@@ -28,7 +29,7 @@ namespace LumosLib
             await File.WriteAllTextAsync(_path, json);
         }
 
-        public override UniTask<T> LoadAsync<T>()
+        public override UniTask<T> ReadAsync<T>()
         {
             if (!File.Exists(_path))  
                 return UniTask.FromResult<T>(default);

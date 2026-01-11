@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,9 +10,9 @@ namespace LumosLib
         #region >--------------------------------------------------- FIELD
 
         
-        [SerializeField] private BaseSaveStorage _saveStorage;
+        [SerializeField] private BaseDataSource _saveDataSource;
         
-        private readonly Dictionary<Type, ISaveData> _saveDataDict = new();
+        private readonly Dictionary<Type, object> _saveDataDict = new();
         
         
         #endregion
@@ -31,9 +30,13 @@ namespace LumosLib
         #region >--------------------------------------------------- CORE
         
         
-        public async Task SaveAsync<T>(T data) where T : ISaveData
+        public async UniTask SaveAsync<T>(T data)
         {
-            if (_saveStorage == null) return;
+            if (_saveDataSource == null)
+            {
+                DebugUtil.LogWarning("data source not found", "");
+                return;
+            }
             
             var type = typeof(T);
 
@@ -41,19 +44,44 @@ namespace LumosLib
             {
                 _saveDataDict[typeof(T)] = data;
             }
-            
-            await _saveStorage.SaveAsync(data);
+
+            try
+            {
+                await _saveDataSource.WriteAsync(data);
+                DebugUtil.Log("SAVE", "SUCCESS");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
         
-        public async Task<T> LoadAsync<T>() where T : ISaveData
+        public async UniTask<T> LoadAsync<T>()
         {
-            if (_saveStorage == null) return default;
+            if (_saveDataSource == null)
+            {
+                DebugUtil.LogWarning("data source not found", "");
+                return default;
+            }
             
             if (_saveDataDict.ContainsKey(typeof(T)))
             {
-                return await _saveStorage.LoadAsync<T>();
+                try
+                {
+                    var result = await _saveDataSource.ReadAsync<T>();
+                    DebugUtil.Log("LOAD", "SUCCESS");
+
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
 
+            DebugUtil.LogWarning("LOAD : save data not found", "FAIL");
             return default;
         }
         

@@ -21,6 +21,43 @@ namespace LumosLib
             return path;
         }
         
+        public static void CreatePrefab<T>() where T : MonoBehaviour
+        {
+            string typeName = typeof(T).Name;
+            
+            GameObject obj = new GameObject(typeName);
+            obj.AddComponent<T>();
+
+            CreatePrefab(obj);
+        }
+        
+        private static void CreatePrefab(GameObject obj)
+        {
+            string prefabPath = Path.Combine(GetCurrentPath(), obj.name + ".prefab");
+
+            PrefabUtility.SaveAsPrefabAsset(obj, prefabPath);
+            
+            Selection.activeObject = null;
+            Object.DestroyImmediate(obj);
+            AssetDatabase.Refresh();
+        }
+        
+        
+        public static void CreateSO<T>(string assetName) where T : ScriptableObject
+        {
+            string path = GetCurrentPath();
+            
+            T asset = ScriptableObject.CreateInstance<T>();
+
+            string fullPath = Path.Combine(path, assetName);
+
+            ProjectWindowUtil.CreateAsset(asset, fullPath);
+
+            ProjectWindowUtil.ShowCreatedAsset(asset);
+        }
+
+      
+
         
         #endregion
         #region >--------------------------------------------------- SCRIPT
@@ -44,7 +81,7 @@ namespace LumosLib
             CreateScript("UINew.cs", File.ReadAllText(Constant.PathUITemplate));
         }
         
-        private static void CreateScript(string scriptName, string template)
+        public static void CreateScript(string scriptName, string template)
         {
             string path = GetCurrentPath();
             
@@ -92,21 +129,7 @@ namespace LumosLib
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Scriptable Object/Save Storage/Json", false, int.MinValue)]
         public static void CreateJsonSaveStorage()
         {
-            CreateSO<JsonSaveStorage>($"New{nameof(JsonSaveStorage)}.asset");
-        }
-        
-        private static void CreateSO<T>(string assetName) where T : ScriptableObject
-        {
-            string path = GetCurrentPath();
-            
-            
-            T asset = ScriptableObject.CreateInstance<T>();
-
-            string fullPath = Path.Combine(path, assetName);
-
-            ProjectWindowUtil.CreateAsset(asset, fullPath);
-
-            ProjectWindowUtil.ShowCreatedAsset(asset);
+            CreateSO<JsonDataSource>($"New{nameof(JsonDataSource)}.asset");
         }
         
         
@@ -194,29 +217,6 @@ namespace LumosLib
         {
             CreatePrefab<AudioPlayer>();
         }
-        
-        
-        private static void CreatePrefab<T>() where T : MonoBehaviour
-        {
-            string typeName = typeof(T).Name;
-            
-            GameObject obj = new GameObject(typeName);
-            obj.AddComponent<T>();
-
-            CreatePrefab(obj);
-        }
-
-        private static void CreatePrefab(GameObject obj)
-        {
-            string prefabPath = Path.Combine(GetCurrentPath(), obj.name + ".prefab");
-
-            PrefabUtility.SaveAsPrefabAsset(obj, prefabPath);
-            
-            Selection.activeObject = null;
-            Object.DestroyImmediate(obj);
-            AssetDatabase.Refresh();
-        }
-        
 
         #endregion
     }

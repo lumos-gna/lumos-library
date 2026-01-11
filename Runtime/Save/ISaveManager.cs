@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 
 namespace LumosLib
 {
     public interface ISaveManager
     {
-        public Task SaveAsync<T>(T data) where T : ISaveData;
-        public Task<T> LoadAsync<T>() where T : ISaveData;
+        public UniTask SaveAsync<T>(T data);
+        public UniTask<T> LoadAsync<T>();
     }
 }
