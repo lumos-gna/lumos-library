@@ -55,9 +55,9 @@ namespace LumosLib
         #region  >--------------------------------------------------- LOAD
        
 
-        public T Get<T>(string fileName) where T : Object
+        public T Get<T>(string assetName) where T : Object
         {
-            if (!_allResources.TryGetValue(fileName, out var resource))
+            if (!_allResources.TryGetValue(assetName, out var resource))
                 return null;
             
             if (resource is GameObject go)
@@ -75,12 +75,12 @@ namespace LumosLib
             return null;
         }
         
-        public T Get<T>(string label, string fileName) where T : Object
+        public T Get<T>(string label, string assetName) where T : Object
         {
             if (!_resourceEntriesDict.TryGetValue(label, out var entry))
                 return null;
             
-            var resource = entry.GetResource(fileName);
+            var resource = entry.GetResource(assetName);
             if (resource is GameObject go)
             {
                 if (go.TryGetComponent(out T result))

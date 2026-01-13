@@ -67,7 +67,6 @@ namespace LumosLib
             if (results.Count > 0)
             {
                 EditorUtility.SetDirty(owner);
-                AssetDatabase.SaveAssets();
             }
 
             DebugUtil.Log($"Find {results.Count} resources.", $"Complete");
