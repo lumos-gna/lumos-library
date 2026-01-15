@@ -96,7 +96,18 @@ namespace LumosLib
          Button("Collect UI Resources")]
         public void SetUIResources()
         {
-            _uiPrefabs = ResourcesUtil.Find<UIBase>(this, "", SearchOption.AllDirectories);
+            _uiPrefabs = new();
+            
+            var entries = ResourcesUtil.Find<UIBase>(this, "", SearchOption.AllDirectories);
+
+            foreach (var entry in entries)
+            {
+                var result = entry.GetResource<UIBase>();
+                if (result != null)
+                {
+                    _uiPrefabs.Add(result);
+                }
+            }
         }
         
         

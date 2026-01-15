@@ -7,13 +7,13 @@ namespace LumosLib
 {
     public static class ResourcesUtil
     {
-        public static List<T> Find<T>(Object owner, string folderPath, SearchOption searchOption)
+        public static List<ResourceEntry> Find<T>(Object owner, string folderPath, SearchOption searchOption)
         {
 #if UNITY_EDITOR
             
             Undo.RecordObject(owner, "Find Assets");
 
-            var results = new List<T>();
+            var results =  new List<ResourceEntry>();
             
             var path = folderPath.Replace("Assets/", "");
             path = path.Replace("Resources/", "");
@@ -28,39 +28,39 @@ namespace LumosLib
             }
 
             string[] files = Directory.GetFiles(absolutePath, "*.*", searchOption);
-                
+            
             foreach (var file in files)
             {
                 if (file.EndsWith(".meta")) continue;
-
-                string relativePath = "Assets" +
-                                      file.Replace(Application.dataPath, "")
-                                          .Replace("\\", "/");
-
-                Object asset = AssetDatabase.LoadAssetAtPath<Object>(relativePath);
                 
-                if (typeof(Component).IsAssignableFrom(typeof(T)))
-                {
+                string relativePath = "Assets" + file.Replace(Application.dataPath, "").Replace("\\", "/");
+
+                Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(relativePath);
+    
+                ResourceEntry entry = null;
+                
+                foreach (var asset in allAssets)
+                {   
                     if (asset == null) continue;
 
-                    if (asset is GameObject go)
+                    if (asset is T)
                     {
-                        var component = go.GetComponent<T>();
-                        if (component != null)
+                        if (entry == null)
                         {
-                            results.Add(component);
+                            entry = new ResourceEntry()
+                            {
+                                key = Path.GetFileNameWithoutExtension(relativePath),
+                                _resources = new()
+                            };
                         }
+                        
+                        entry._resources.Add(asset);
                     }
                 }
-                else
+                
+                if (entry != null && entry._resources.Count > 0)
                 {
-                    if (asset != null)
-                    {
-                        if (asset is T t)
-                        {
-                            results.Add(t);
-                        }
-                    }
+                    results.Add(entry);
                 }
             }
             
@@ -74,5 +74,26 @@ namespace LumosLib
 #endif
             return null;
         }
+    }
+    
+    [System.Serializable]
+    public class ResourceEntry
+    {
+        public string key;
+        public List<UnityEngine.Object> _resources;
+        
+        public T GetResource<T>()
+        {
+            foreach (var resource in _resources)
+            {
+                if (resource is T t)
+                {
+                    return t;
+                }
+            }
+            
+            return default;
+        }
+        
     }
 }

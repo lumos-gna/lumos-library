@@ -198,7 +198,18 @@ namespace LumosLib
         [Button("Collect SoundAsset Resources")]
         public void SetSoundAssetResources()
         {
-            _soundAssets = ResourcesUtil.Find<SoundAsset>(this, "", SearchOption.AllDirectories);
+            _soundAssets = new();
+            
+            var entries = ResourcesUtil.Find<SoundAsset>(this, "", SearchOption.AllDirectories);
+
+            foreach (var entry in entries)
+            {
+                var result = entry.GetResource<SoundAsset>();
+                if (result != null)
+                {
+                    _soundAssets.Add(result);
+                }
+            }
         }
         
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using TriInspector;
 using UnityEngine;
@@ -14,10 +13,9 @@ namespace LumosLib
         #region  >--------------------------------------------------- FIELD
 
         
-        [Group("Resources"), SerializeField, LabelText("Entries")] private List<ResourceEntry> _resourceEntries;
+        [Group("Resources"), SerializeField, LabelText("Entries")] private List<ResourceEntryGroup> _entryGroups;
         
-        private Dictionary<string, Object> _allResources = new();
-        private Dictionary<string, ResourceEntry> _resourceEntriesDict = new();
+        private Dictionary<string, ResourceEntryGroup> _entryGroupsDict = new();
         
         
         #endregion
@@ -26,23 +24,14 @@ namespace LumosLib
         
         public UniTask<bool> InitAsync()
         {
-            foreach (var entry in _resourceEntries)
+            foreach (var group in _entryGroups)
             {
-                entry.Init();
+                group.Init();
                 
-                if (!_resourceEntriesDict.TryAdd(entry.Label, entry))
+                if (!_entryGroupsDict.TryAdd(group.Label, group))
                 {
                     DebugUtil.LogError("duplicate entry label", "Resource");
                     return UniTask.FromResult(false);
-                }
-                
-                foreach (var resource in entry.Resources)
-                {
-                    if (!_allResources.TryAdd(resource.name, resource))
-                    {
-                        DebugUtil.LogError("duplicate resource name", "Resource");
-                        return UniTask.FromResult(false);
-                    }
                 }
             }
             
@@ -52,67 +41,42 @@ namespace LumosLib
     
         
         #endregion
-        #region  >--------------------------------------------------- LOAD
+        #region  >--------------------------------------------------- GET
        
 
-        public T Get<T>(string assetName) where T : Object
+        public T Get<T>(string assetName)
         {
-            if (!_allResources.TryGetValue(assetName, out var resource))
-                return null;
-            
-            if (resource is GameObject go)
+            foreach (var group in _entryGroups)
             {
-                if (go.TryGetComponent(out T result))
+                var result = group.GetResource<T>(assetName);
+
+                if (result != null)
                 {
                     return result;
                 }
             }
-            else
-            {
-                return resource as T;
-            }
 
-            return null;
+            return default;
         }
         
-        public T Get<T>(string label, string assetName) where T : Object
+        public T Get<T>(string label, string assetName)
         {
-            if (!_resourceEntriesDict.TryGetValue(label, out var entry))
-                return null;
-            
-            var resource = entry.GetResource(assetName);
-            if (resource is GameObject go)
+            if (_entryGroupsDict.TryGetValue(label, out var entry))
             {
-                if (go.TryGetComponent(out T result))
-                {
-                    return result;
-                }
-            }
-            else
-            {
-                return resource as T;
+                return entry.GetResource<T>(assetName);
             }
             
-            return null;
+            return default;
         }
 
-        public List<T> GetAll<T>(string label) where T : Object
+        public List<T> GetAll<T>(string label)
         {
-            if (!_resourceEntriesDict.TryGetValue(label, out var entry))
-                return null;
-
-            if (typeof(Component).IsAssignableFrom(typeof(T)))
+            if (_entryGroupsDict.TryGetValue(label, out var entry))
             {
-                return entry.Resources
-                    .OfType<GameObject>()
-                    .Select(go => go.GetComponent<T>())
-                    .Where(c => c != null)
-                    .ToList();
+                return entry.GetResourcesAll<T>();
             }
-
-            return entry.Resources
-                .OfType<T>()
-                .ToList();
+            
+            return default;
         }
 
         
@@ -123,10 +87,15 @@ namespace LumosLib
         [Group("Resources"), Button("Collect All Resources")]
         public void SetEntriesResources()
         {
-            foreach (var entry in _resourceEntries)
+            foreach (var group in _entryGroups)
             {
-                entry.SetResources(ResourcesUtil.Find<Object>(this, entry.FolderPath, SearchOption.TopDirectoryOnly));
+                group.SetResources(ResourcesUtil.Find<Object>(this, group.FolderPath, SearchOption.TopDirectoryOnly));
             }
+            
+            /*foreach (var entry in _resourceEntries)
+            {
+                entry.SetResources(ResourcesUtil.FindObjects<Object>(this, entry.FolderPath, SearchOption.TopDirectoryOnly));
+            }*/
         }
         
         
